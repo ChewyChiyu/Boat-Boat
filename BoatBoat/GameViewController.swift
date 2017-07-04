@@ -25,7 +25,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameView = self.view as? SCNView
         gameView.isPlaying = true
         
-        //gameView.allowsCameraControl = true
+        gameView.allowsCameraControl = true
         gameView.autoenablesDefaultLighting = true
         gameView.showsStatistics = true
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
@@ -41,8 +41,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         //set game Scene state to isLaunch
         gameScene.state = .isLaunched
         
-        //terrain Generation
-        gameScene.terrainGeneration()
     }
     
     //MARK: Render delegate
@@ -51,7 +49,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameScene.moveMasterBoat()
         //handle management of terrain
         gameScene.manageTerrain()
-
+        
     }
     
     //MARK: User Interaction

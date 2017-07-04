@@ -44,13 +44,8 @@ class GameScene : SCNScene{
                 self.rootNode.addChildNode(masterBoat)
                 //apply physics to masterBoat
                 applyPhysics(boat: masterBoat)
-                //attaching light nodes to masterBoat
-                for child in self.rootNode.childNodes{
-                    if(child.name == "omni"){
-                        //basic light source, 5 in total
-                        masterBoat.addChildNode(child)
-                    }
-                }
+                //move master boat to origin of ocean
+                masterBoat.presentation.position = SCNVector3(planeLength/4,0,planeLength/4)
                 //add camera to boat node
                 masterBoat.addChildNode(gameCamera)
                 //adjust camera to far
@@ -156,38 +151,99 @@ class GameScene : SCNScene{
         //starting accel updates
         motionManager.startAccelerometerUpdates()
         
-        
         //coloring background
         self.background.contents = UIColor(colorLiteralRed: 171/255, green: 203/255, blue: 1, alpha: 1)
         
+        //generate terrain
+        terrainGeneration()
     }
+    
     //MARK: Background / Terrain
     func terrainGeneration(){
-        for _ in 0..<4{
-        let seaPlane = generateTerrain()
-        terrainPlane.append(seaPlane)
+        for index in 0..<9{
+            let seaPlane = generateTerrain()
+            //switching for position
+            switch(index){
+            //initial position of sea terrain tiles, a 9x9 grid
+            case 0:
+                //middle origin
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,-planeLength*0.95/2)
+                break
+            case 1:
+                //middle origin, right
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,-(planeLength*0.95)/2)
+                break
+            case 2:
+                //middle origin, left
+                seaPlane.position = SCNVector3(-planeLength*0.95,0,-(planeLength*0.95)/2)
+                break
+            case 3:
+                //top origin
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,-planeLength*0.95)
+                break
+            case 4:
+                //top origin, right
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,-planeLength*0.95)
+                break
+            case 5:
+                //top origin, left
+                seaPlane.position = SCNVector3(-planeLength*0.95,0,-planeLength*0.95)
+                break
+            case 6:
+                //bottom origin
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,(planeLength*0.95)/2)
+                break
+            case 7:
+                //bottom origin, right
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,(planeLength*0.95)/2)
+                break
+            case 8:
+                //bottom origin, left
+                seaPlane.position = SCNVector3(-(planeLength*0.95),0,(planeLength*0.95)/2)
+                break
+            default:
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,planeLength*0.95/2)
+                break
+            }
+            //adding to an array and child nodes for ease of access
+            terrainPlane.append(seaPlane)
+            self.rootNode.addChildNode(seaPlane)
         }
         
         
     }
     func manageTerrain(){
-       
         //manages movement / respawn / positioning of sea planes
-        //adding back seaplane
+        let displacement = (planeLength*0.95)
+        //for determining what direction to move planes
+        let vectorNew = getZForward(node: masterBoat.presentation)
         for plane in terrainPlane{
-            //setting position
-            var location = SCNVector3Zero
-            let masterBoatLocation = masterBoat.presentation.position
-            
-            //forward z movement
-            if(masterBoatLocation.z - plane.position.z > planeLength){
-                print("moving z vector of plane")
-                plane.position.z += planeLength
+            let masterBoatPosition = masterBoat.presentation.position
+            //z movement
+            if(plane.position.z - masterBoatPosition.z > planeLength/4){
+                if(vectorNew.z > 0){ //heading z positive direction
+                    plane.position.z -= (displacement*2.5) //some trail and error displacement math
+                }
             }
-            
-            plane.position = location
-            self.rootNode.addChildNode(plane)
+            if(plane.position.z - masterBoatPosition.z < -planeLength){ //accounting for reverse direction trail and error math for displacement of moving backwards
+                if(vectorNew.z < 0){ //heading z negative direction
+                    plane.position.z += (displacement*2.5) //some trail and error displacement math
+                }
+            }
+            //x movement
+            if(plane.position.x - masterBoatPosition.x > planeLength/4){
+                 if(vectorNew.x > 0){
+                    plane.position.x -= (displacement*2.5) //some trail and error displacement math
+                }
+            }
+            if(plane.position.x - masterBoatPosition.x < -planeLength){
+                if(vectorNew.x < 0){
+                plane.position.x += (displacement*2.5) //some trail and error displacement math
+                }
+            }
         }
+        
+        
     }
     func generateTerrain() -> SCNNode {
         //add ocean, perlin noise generation from http://www.rogerboesch.com:2368/scenekit-tutorial-series-from-zero-to-hero/
@@ -202,7 +258,6 @@ class GameScene : SCNScene{
         //custom image of geometry textures
         let customImage = UIImage(named: "Water")
         seaPlane.create(withImage: customImage )
-        
         return seaPlane
     }
     required init?(coder aDecoder: NSCoder) {
