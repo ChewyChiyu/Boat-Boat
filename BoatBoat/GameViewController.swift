@@ -26,7 +26,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameView.isPlaying = true
         
         //gameView.allowsCameraControl = true
-        gameView.autoenablesDefaultLighting = true
+        //gameView.autoenablesDefaultLighting = true
         gameView.showsStatistics = true
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
         gameView.debugOptions = SCNDebugOptions.showWireframe
