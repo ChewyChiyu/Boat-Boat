@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2089C5431F0B68A5005F877B /* RBTerrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5421F0B68A5005F877B /* RBTerrain.swift */; };
+		2089C5451F0B68CC005F877B /* RBPerlinNoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */; };
+		2089C5471F0B6A64005F877B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5461F0B6A64005F877B /* GameScene.swift */; };
 		20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7821F0ADFB700927DDD /* AppDelegate.swift */; };
 		20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7841F0ADFB700927DDD /* art.scnassets */; };
 		20EBA7871F0ADFB700927DDD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7861F0ADFB700927DDD /* GameViewController.swift */; };
@@ -37,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2089C5421F0B68A5005F877B /* RBTerrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBTerrain.swift; sourceTree = "<group>"; };
+		2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBPerlinNoiseGenerator.swift; sourceTree = "<group>"; };
+		2089C5461F0B6A64005F877B /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		20EBA77F1F0ADFB700927DDD /* BoatBoat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoatBoat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20EBA7821F0ADFB700927DDD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20EBA7841F0ADFB700927DDD /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -84,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				20EBA7C01F0AF48C00927DDD /* Boat.scn */,
+				2089C5461F0B6A64005F877B /* GameScene.swift */,
 				20EBA7B81F0AEFC500927DDD /* GameScene.scn */,
 			);
 			name = SceneKit;
@@ -99,11 +106,22 @@
 			path = BoatBoat;
 			sourceTree = "<group>";
 		};
+		2089C5481F0B718A005F877B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */,
+				2089C5421F0B68A5005F877B /* RBTerrain.swift */,
+			);
+			name = Utilities;
+			path = BoatBoat;
+			sourceTree = "<group>";
+		};
 		20EBA7761F0ADFB700927DDD = {
 			isa = PBXGroup;
 			children = (
 				20EBA7811F0ADFB700927DDD /* BoatBoat */,
 				2089C5411F0B08FA005F877B /* ViewControllers */,
+				2089C5481F0B718A005F877B /* Utilities */,
 				2089C5401F0B08CD005F877B /* SceneKit */,
 				20EBA7981F0ADFB700927DDD /* BoatBoatTests */,
 				20EBA7A31F0ADFB700927DDD /* BoatBoatUITests */,
@@ -292,7 +310,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2089C5471F0B6A64005F877B /* GameScene.swift in Sources */,
+				2089C5431F0B68A5005F877B /* RBTerrain.swift in Sources */,
 				20EBA7871F0ADFB700927DDD /* GameViewController.swift in Sources */,
+				2089C5451F0B68CC005F877B /* RBPerlinNoiseGenerator.swift in Sources */,
 				20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
