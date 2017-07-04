@@ -30,7 +30,7 @@ class GameScene : SCNScene{
     
     //Terrain generation map array [1,2,3,4]
     var terrainPlane = [SCNNode]()
-    let planeLength: Float = 50
+    let planeLength: Float = 100
     
     //MARK: Switch on game state engine
     var state : gameState = .isLaunched{
@@ -167,42 +167,42 @@ class GameScene : SCNScene{
             //initial position of sea terrain tiles, a 9x9 grid
             case 0:
                 //middle origin
-                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,-planeLength*0.95/2)
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,-2,-planeLength*0.95/2)
                 break
             case 1:
                 //middle origin, right
-                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,-(planeLength*0.95)/2)
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,-2,-(planeLength*0.95)/2)
                 break
             case 2:
                 //middle origin, left
-                seaPlane.position = SCNVector3(-planeLength*0.95,0,-(planeLength*0.95)/2)
+                seaPlane.position = SCNVector3(-planeLength*0.95,-2,-(planeLength*0.95)/2)
                 break
             case 3:
                 //top origin
-                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,-planeLength*0.95)
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,-2,-planeLength*0.95)
                 break
             case 4:
                 //top origin, right
-                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,-planeLength*0.95)
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,-2,-planeLength*0.95)
                 break
             case 5:
                 //top origin, left
-                seaPlane.position = SCNVector3(-planeLength*0.95,0,-planeLength*0.95)
+                seaPlane.position = SCNVector3(-planeLength*0.95,-2,-planeLength*0.95)
                 break
             case 6:
                 //bottom origin
-                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,(planeLength*0.95)/2)
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,-2,(planeLength*0.95)/2)
                 break
             case 7:
                 //bottom origin, right
-                seaPlane.position = SCNVector3((planeLength*0.95)/2,0,(planeLength*0.95)/2)
+                seaPlane.position = SCNVector3((planeLength*0.95)/2,-2,(planeLength*0.95)/2)
                 break
             case 8:
                 //bottom origin, left
-                seaPlane.position = SCNVector3(-(planeLength*0.95),0,(planeLength*0.95)/2)
+                seaPlane.position = SCNVector3(-(planeLength*0.95),-2,(planeLength*0.95)/2)
                 break
             default:
-                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,0,planeLength*0.95/2)
+                seaPlane.position = SCNVector3(-(planeLength*0.95)/2,-2,planeLength*0.95/2)
                 break
             }
             //adding to an array and child nodes for ease of access
