@@ -1,0 +1,572 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7821F0ADFB700927DDD /* AppDelegate.swift */; };
+		20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7841F0ADFB700927DDD /* art.scnassets */; };
+		20EBA7871F0ADFB700927DDD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7861F0ADFB700927DDD /* GameViewController.swift */; };
+		20EBA78A1F0ADFB700927DDD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7881F0ADFB700927DDD /* Main.storyboard */; };
+		20EBA78C1F0ADFB700927DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA78B1F0ADFB700927DDD /* Assets.xcassets */; };
+		20EBA78F1F0ADFB700927DDD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA78D1F0ADFB700927DDD /* LaunchScreen.storyboard */; };
+		20EBA79A1F0ADFB700927DDD /* BoatBoatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7991F0ADFB700927DDD /* BoatBoatTests.swift */; };
+		20EBA7A51F0ADFB700927DDD /* BoatBoatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7A41F0ADFB700927DDD /* BoatBoatUITests.swift */; };
+		20EBA7B91F0AEFC500927DDD /* GameScene.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7B81F0AEFC500927DDD /* GameScene.scn */; };
+		20EBA7C11F0AF48C00927DDD /* Boat.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7C01F0AF48C00927DDD /* Boat.scn */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		20EBA7961F0ADFB700927DDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20EBA7771F0ADFB700927DDD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20EBA77E1F0ADFB700927DDD;
+			remoteInfo = BoatBoat;
+		};
+		20EBA7A11F0ADFB700927DDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20EBA7771F0ADFB700927DDD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20EBA77E1F0ADFB700927DDD;
+			remoteInfo = BoatBoat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		20EBA77F1F0ADFB700927DDD /* BoatBoat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoatBoat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20EBA7821F0ADFB700927DDD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		20EBA7841F0ADFB700927DDD /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		20EBA7861F0ADFB700927DDD /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		20EBA7891F0ADFB700927DDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		20EBA78B1F0ADFB700927DDD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		20EBA78E1F0ADFB700927DDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		20EBA7901F0ADFB700927DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20EBA7951F0ADFB700927DDD /* BoatBoatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoatBoatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		20EBA7991F0ADFB700927DDD /* BoatBoatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoatBoatTests.swift; sourceTree = "<group>"; };
+		20EBA79B1F0ADFB700927DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20EBA7A01F0ADFB700927DDD /* BoatBoatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoatBoatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		20EBA7A41F0ADFB700927DDD /* BoatBoatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoatBoatUITests.swift; sourceTree = "<group>"; };
+		20EBA7A61F0ADFB700927DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20EBA7B81F0AEFC500927DDD /* GameScene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = GameScene.scn; sourceTree = "<group>"; };
+		20EBA7C01F0AF48C00927DDD /* Boat.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Boat.scn; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		20EBA77C1F0ADFB700927DDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA7921F0ADFB700927DDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA79D1F0ADFB700927DDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2089C5401F0B08CD005F877B /* SceneKit */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA7C01F0AF48C00927DDD /* Boat.scn */,
+				20EBA7B81F0AEFC500927DDD /* GameScene.scn */,
+			);
+			name = SceneKit;
+			path = BoatBoat;
+			sourceTree = "<group>";
+		};
+		2089C5411F0B08FA005F877B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA7861F0ADFB700927DDD /* GameViewController.swift */,
+			);
+			name = ViewControllers;
+			path = BoatBoat;
+			sourceTree = "<group>";
+		};
+		20EBA7761F0ADFB700927DDD = {
+			isa = PBXGroup;
+			children = (
+				20EBA7811F0ADFB700927DDD /* BoatBoat */,
+				2089C5411F0B08FA005F877B /* ViewControllers */,
+				2089C5401F0B08CD005F877B /* SceneKit */,
+				20EBA7981F0ADFB700927DDD /* BoatBoatTests */,
+				20EBA7A31F0ADFB700927DDD /* BoatBoatUITests */,
+				20EBA7801F0ADFB700927DDD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		20EBA7801F0ADFB700927DDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA77F1F0ADFB700927DDD /* BoatBoat.app */,
+				20EBA7951F0ADFB700927DDD /* BoatBoatTests.xctest */,
+				20EBA7A01F0ADFB700927DDD /* BoatBoatUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		20EBA7811F0ADFB700927DDD /* BoatBoat */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA7821F0ADFB700927DDD /* AppDelegate.swift */,
+				20EBA7841F0ADFB700927DDD /* art.scnassets */,
+				20EBA78B1F0ADFB700927DDD /* Assets.xcassets */,
+				20EBA7881F0ADFB700927DDD /* Main.storyboard */,
+				20EBA78D1F0ADFB700927DDD /* LaunchScreen.storyboard */,
+				20EBA7901F0ADFB700927DDD /* Info.plist */,
+			);
+			path = BoatBoat;
+			sourceTree = "<group>";
+		};
+		20EBA7981F0ADFB700927DDD /* BoatBoatTests */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA7991F0ADFB700927DDD /* BoatBoatTests.swift */,
+				20EBA79B1F0ADFB700927DDD /* Info.plist */,
+			);
+			path = BoatBoatTests;
+			sourceTree = "<group>";
+		};
+		20EBA7A31F0ADFB700927DDD /* BoatBoatUITests */ = {
+			isa = PBXGroup;
+			children = (
+				20EBA7A41F0ADFB700927DDD /* BoatBoatUITests.swift */,
+				20EBA7A61F0ADFB700927DDD /* Info.plist */,
+			);
+			path = BoatBoatUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		20EBA77E1F0ADFB700927DDD /* BoatBoat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20EBA7A91F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoat" */;
+			buildPhases = (
+				20EBA77B1F0ADFB700927DDD /* Sources */,
+				20EBA77C1F0ADFB700927DDD /* Frameworks */,
+				20EBA77D1F0ADFB700927DDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BoatBoat;
+			productName = BoatBoat;
+			productReference = 20EBA77F1F0ADFB700927DDD /* BoatBoat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		20EBA7941F0ADFB700927DDD /* BoatBoatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20EBA7AC1F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoatTests" */;
+			buildPhases = (
+				20EBA7911F0ADFB700927DDD /* Sources */,
+				20EBA7921F0ADFB700927DDD /* Frameworks */,
+				20EBA7931F0ADFB700927DDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20EBA7971F0ADFB700927DDD /* PBXTargetDependency */,
+			);
+			name = BoatBoatTests;
+			productName = BoatBoatTests;
+			productReference = 20EBA7951F0ADFB700927DDD /* BoatBoatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		20EBA79F1F0ADFB700927DDD /* BoatBoatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20EBA7AF1F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoatUITests" */;
+			buildPhases = (
+				20EBA79C1F0ADFB700927DDD /* Sources */,
+				20EBA79D1F0ADFB700927DDD /* Frameworks */,
+				20EBA79E1F0ADFB700927DDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20EBA7A21F0ADFB700927DDD /* PBXTargetDependency */,
+			);
+			name = BoatBoatUITests;
+			productName = BoatBoatUITests;
+			productReference = 20EBA7A01F0ADFB700927DDD /* BoatBoatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		20EBA7771F0ADFB700927DDD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Evan Chen";
+				TargetAttributes = {
+					20EBA77E1F0ADFB700927DDD = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 6H36FS38Y3;
+						ProvisioningStyle = Automatic;
+					};
+					20EBA7941F0ADFB700927DDD = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 6H36FS38Y3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 20EBA77E1F0ADFB700927DDD;
+					};
+					20EBA79F1F0ADFB700927DDD = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 6H36FS38Y3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 20EBA77E1F0ADFB700927DDD;
+					};
+				};
+			};
+			buildConfigurationList = 20EBA77A1F0ADFB700927DDD /* Build configuration list for PBXProject "BoatBoat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 20EBA7761F0ADFB700927DDD;
+			productRefGroup = 20EBA7801F0ADFB700927DDD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				20EBA77E1F0ADFB700927DDD /* BoatBoat */,
+				20EBA7941F0ADFB700927DDD /* BoatBoatTests */,
+				20EBA79F1F0ADFB700927DDD /* BoatBoatUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		20EBA77D1F0ADFB700927DDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20EBA7C11F0AF48C00927DDD /* Boat.scn in Resources */,
+				20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */,
+				20EBA7B91F0AEFC500927DDD /* GameScene.scn in Resources */,
+				20EBA78F1F0ADFB700927DDD /* LaunchScreen.storyboard in Resources */,
+				20EBA78C1F0ADFB700927DDD /* Assets.xcassets in Resources */,
+				20EBA78A1F0ADFB700927DDD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA7931F0ADFB700927DDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA79E1F0ADFB700927DDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		20EBA77B1F0ADFB700927DDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20EBA7871F0ADFB700927DDD /* GameViewController.swift in Sources */,
+				20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA7911F0ADFB700927DDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20EBA79A1F0ADFB700927DDD /* BoatBoatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		20EBA79C1F0ADFB700927DDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20EBA7A51F0ADFB700927DDD /* BoatBoatUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		20EBA7971F0ADFB700927DDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20EBA77E1F0ADFB700927DDD /* BoatBoat */;
+			targetProxy = 20EBA7961F0ADFB700927DDD /* PBXContainerItemProxy */;
+		};
+		20EBA7A21F0ADFB700927DDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 20EBA77E1F0ADFB700927DDD /* BoatBoat */;
+			targetProxy = 20EBA7A11F0ADFB700927DDD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		20EBA7881F0ADFB700927DDD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				20EBA7891F0ADFB700927DDD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		20EBA78D1F0ADFB700927DDD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				20EBA78E1F0ADFB700927DDD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		20EBA7A71F0ADFB700927DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		20EBA7A81F0ADFB700927DDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		20EBA7AA1F0ADFB700927DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoat/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		20EBA7AB1F0ADFB700927DDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoat/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		20EBA7AD1F0ADFB700927DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BoatBoat.app/BoatBoat";
+			};
+			name = Debug;
+		};
+		20EBA7AE1F0ADFB700927DDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BoatBoat.app/BoatBoat";
+			};
+			name = Release;
+		};
+		20EBA7B01F0ADFB700927DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoatUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = BoatBoat;
+			};
+			name = Debug;
+		};
+		20EBA7B11F0ADFB700927DDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 6H36FS38Y3;
+				INFOPLIST_FILE = BoatBoatUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Chiyu.BoatBoatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = BoatBoat;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		20EBA77A1F0ADFB700927DDD /* Build configuration list for PBXProject "BoatBoat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20EBA7A71F0ADFB700927DDD /* Debug */,
+				20EBA7A81F0ADFB700927DDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20EBA7A91F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20EBA7AA1F0ADFB700927DDD /* Debug */,
+				20EBA7AB1F0ADFB700927DDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20EBA7AC1F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20EBA7AD1F0ADFB700927DDD /* Debug */,
+				20EBA7AE1F0ADFB700927DDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20EBA7AF1F0ADFB700927DDD /* Build configuration list for PBXNativeTarget "BoatBoatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20EBA7B01F0ADFB700927DDD /* Debug */,
+				20EBA7B11F0ADFB700927DDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 20EBA7771F0ADFB700927DDD /* Project object */;
+}
