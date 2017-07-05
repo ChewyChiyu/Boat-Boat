@@ -92,12 +92,15 @@ class GameScene : SCNScene{
     func moveMasterBoat(){
         //new vector for next position
         let vectorNew = getZForward(node: masterBoat.presentation)
+        
+        //Setting physics position to master postion
+        masterBoat.position = masterBoat.presentation.position
+
         //applying new vector force
         masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
     
         //Setting physics position to master postion
         masterBoat.position = masterBoat.presentation.position
-        print(masterBoat.position)
 
     }
     
