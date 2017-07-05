@@ -94,7 +94,7 @@ class GameScene : SCNScene{
             //new vector for next position
             let vectorNew = getZForward(node: masterBoat.presentation)
             //applying new vector force
-            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.3,0,-vectorNew.z*0.3), asImpulse: true)
+            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.2,0,-vectorNew.z*0.2), asImpulse: true)
     }
     
     
