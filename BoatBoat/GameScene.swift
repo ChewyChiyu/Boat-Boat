@@ -22,9 +22,6 @@ class GameScene : SCNScene{
     //Player node
     var masterBoat = SCNNode()
     
-    //movement rotation angle
-    var rotationAngle: SCNVector4 = SCNVector4Zero // initial value of zero
-    
     //Terrain generation map array [1,2,3,4]
     var terrainPlane = [SCNNode]()
     let planeLength: Float = 100
@@ -43,6 +40,9 @@ class GameScene : SCNScene{
                 applyPhysics(boat: masterBoat)
                 //move master boat to origin of ocean
                 masterBoat.presentation.position = SCNVector3(planeLength/4,0,planeLength/4)
+                
+                
+                
                 break
             case .isPlaying:
                 break
