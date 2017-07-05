@@ -17,6 +17,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     var gameScene : GameScene!
     var gameView : SCNView!
     
+    // primary touch var, changable while touch moves
+    var primaryTouch = CGPoint.zero
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //MARK: Game View and Scene and Camera initialization
@@ -29,7 +33,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         //gameView.autoenablesDefaultLighting = true
         gameView.showsStatistics = true
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
-        gameView.debugOptions = SCNDebugOptions.showWireframe
+        //gameView.debugOptions = SCNDebugOptions.showWireframe
         
         //Loading in Scene
         gameScene = GameScene()
@@ -51,40 +55,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameScene.manageTerrain()
         //handle custom camera control
         gameScene.cameraFollow()
-        //handle rotation of boat
-        gameScene.rotateBoat(boat: gameScene.masterBoat)
+        
     }
     
     //MARK: User Interaction
+    //Handles the rotation of the Master boat
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let locaiton = touches.first?.location(in: gameView)
-        if((locaiton?.x)! > view.bounds.width/2){
-            //touched right
-            gameScene.shouldRotateLeft = true
-            gameScene.shouldRotateRight = false
-        }else{
-            //touched left
-            gameScene.shouldRotateLeft = false
-            gameScene.shouldRotateRight = true
-        }
-        
+        primaryTouch = (touches.first?.location(in: gameView))!
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let locaiton = touches.first?.location(in: gameView)
-        if((locaiton?.x)! > view.bounds.width/2){
-            //touched right
-            gameScene.shouldRotateLeft = true
-            gameScene.shouldRotateRight = false
-        }else{
-            //touched left
-            gameScene.shouldRotateLeft = false
-            gameScene.shouldRotateRight = true
+        
+        //removing masterBoat form gameScene and adding it back after applying euler angle rotation
+        
+        if((locaiton?.x)! > primaryTouch.x){
+            //turn right
+            gameScene.rotateBoat(right: true)
+        }else if ((locaiton?.x)! < primaryTouch.x){
+            //turn left
+            gameScene.rotateBoat(right: false)
         }
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //reseting movement bools
-        gameScene.shouldRotateLeft = false
-        gameScene.shouldRotateRight = false
+        //Setting past touch to primary status
+        primaryTouch = locaiton!
     }
     override var shouldAutorotate: Bool {
         return true

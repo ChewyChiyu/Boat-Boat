@@ -22,9 +22,8 @@ class GameScene : SCNScene{
     //Player node
     var masterBoat = SCNNode()
     
-    //Touch movement boolean
-    var shouldRotateRight:Bool = false
-    var shouldRotateLeft:Bool = false
+    //movement rotation angle
+    var rotationAngle: SCNVector4 = SCNVector4Zero // initial value of zero
     
     //Terrain generation map array [1,2,3,4]
     var terrainPlane = [SCNNode]()
@@ -105,17 +104,17 @@ class GameScene : SCNScene{
     }
     
     //rotates the boat based on user touch
-    func rotateBoat(boat: SCNNode){
-        if(shouldRotateRight){
-            //rotate right here
-            //applying torque
-            masterBoat.physicsBody?.applyTorque(SCNVector4(0,0.01,0,1), asImpulse: true)
-        }
-        if(shouldRotateLeft){
-            //rotate left here
-            //applying torque
-            masterBoat.physicsBody?.applyTorque(SCNVector4(0,-0.01,0,1), asImpulse: true)
-        }
+    func rotateBoat(right: Bool){
+            
+        //rotation of master boat
+
+        //Removal of nodes and adding back after applying eular angles so physics body doesnt derp out
+        
+        masterBoat.removeFromParentNode()
+        
+        masterBoat.eulerAngles.y += (right) ? 0.03 : -0.03
+        
+        self.rootNode.addChildNode(masterBoat)
     }
     
     
