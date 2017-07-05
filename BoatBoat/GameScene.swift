@@ -31,7 +31,7 @@ class GameScene : SCNScene{
     
     //Obstacles array
     var obstacleArray = [SCNNode]()
-    
+    var numObstacles = 30 //initial value
     
     
     //MARK: Switch on game state engine
@@ -94,6 +94,11 @@ class GameScene : SCNScene{
         let vectorNew = getZForward(node: masterBoat.presentation)
         //applying new vector force
         masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
+    
+        //Setting physics position to master postion
+        masterBoat.position = masterBoat.presentation.position
+        print(masterBoat.position)
+
     }
     
     
@@ -106,8 +111,12 @@ class GameScene : SCNScene{
     func rotateBoat(increment: Float){
         //rotation of master boat
         //singling out and reapplying presentation positon after euler rotation
+        
         let position = masterBoat.presentation.position
-                
+
+        //resting pitch of euler angle
+        masterBoat.eulerAngles.x = 0
+        
         masterBoat.eulerAngles.y += (increment*0.01) //scaling down increment
         
         masterBoat.position = position
@@ -293,27 +302,29 @@ class GameScene : SCNScene{
         //right now max Obstacle count is 1
         
         //spawn in obstacles if array count is lower than max
-        if(obstacleArray.count < 1){
+        if(obstacleArray.count < numObstacles){
             //optional if masterBoat exists yet
             let newBuoy = generateBuoy()
             //set position of buoy in from of masterBoat ( masterBoat exists )
             
             //setting location of trajectory
             newBuoy.position = masterBoat.position
-            //splitting the position in x and z raidus (min: 10)
-            newBuoy.position.z -= Float(10 + Int(arc4random_uniform(10)))
-            newBuoy.position.x += (Int(arc4random_uniform(1))==1) ? Float(Int(arc4random_uniform(3))) : -Float(Int(arc4random_uniform(3)))
+            //splitting the position in x and z raidus (min: 30)
+            newBuoy.position.z -= Float(70 + Int(arc4random_uniform(60)))
+            newBuoy.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(30))) : -Float(Int(arc4random_uniform(30)))
             
             //adding new Obstacle, array and scene
             obstacleArray.append(newBuoy)
             self.rootNode.addChildNode(newBuoy)
         }
+        
         //handling in despawn of obstacles
         for index in 0..<obstacleArray.count{
             //despawning of obstacle is behind boat by 10
             if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
                 obstacleArray[index].removeFromParentNode()
                 obstacleArray.remove(at: index)
+                break
             }
         }
         
