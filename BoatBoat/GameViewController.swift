@@ -49,14 +49,43 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameScene.moveMasterBoat()
         //handle management of terrain
         gameScene.manageTerrain()
-        
+        //handle custom camera control
+        gameScene.cameraFollow()
+        //handle rotation of boat
+        gameScene.rotateBoat(boat: gameScene.masterBoat)
     }
     
     //MARK: User Interaction
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let locaiton = touches.first?.location(in: gameView)
+        if((locaiton?.x)! > view.bounds.width/2){
+            //touched right
+            gameScene.shouldRotateLeft = true
+            gameScene.shouldRotateRight = false
+        }else{
+            //touched left
+            gameScene.shouldRotateLeft = false
+            gameScene.shouldRotateRight = true
+        }
         
     }
-    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let locaiton = touches.first?.location(in: gameView)
+        if((locaiton?.x)! > view.bounds.width/2){
+            //touched right
+            gameScene.shouldRotateLeft = true
+            gameScene.shouldRotateRight = false
+        }else{
+            //touched left
+            gameScene.shouldRotateLeft = false
+            gameScene.shouldRotateRight = true
+        }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //reseting movement bools
+        gameScene.shouldRotateLeft = false
+        gameScene.shouldRotateRight = false
+    }
     override var shouldAutorotate: Bool {
         return true
     }
