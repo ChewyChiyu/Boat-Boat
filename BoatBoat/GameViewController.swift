@@ -65,17 +65,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let locaiton = touches.first?.location(in: gameView)
-        
         //removing masterBoat form gameScene and adding it back after applying euler angle rotation
-        
-        if((locaiton?.x)! > primaryTouch.x){
-            //turn right
-            gameScene.rotateBoat(right: true)
-        }else if ((locaiton?.x)! < primaryTouch.x){
-            //turn left
-            gameScene.rotateBoat(right: false)
+        if((locaiton?.y)!-primaryTouch.y <= 5 && (locaiton?.y)!-primaryTouch.y >= -5){ //reduce sensitivity
+        gameScene.rotateBoat(increment: Float(locaiton!.x-primaryTouch.x))
         }
-        //Setting past touch to primary status
         primaryTouch = locaiton!
     }
     override var shouldAutorotate: Bool {

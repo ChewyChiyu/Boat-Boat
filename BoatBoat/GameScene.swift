@@ -94,7 +94,7 @@ class GameScene : SCNScene{
             //new vector for next position
             let vectorNew = getZForward(node: masterBoat.presentation)
             //applying new vector force
-            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
+            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.3,0,-vectorNew.z*0.3), asImpulse: true)
     }
     
     
@@ -104,7 +104,7 @@ class GameScene : SCNScene{
     }
     
     //rotates the boat based on user touch
-    func rotateBoat(right: Bool){
+    func rotateBoat(increment: Float){
             
         //rotation of master boat
 
@@ -112,8 +112,8 @@ class GameScene : SCNScene{
         
         masterBoat.removeFromParentNode()
         
-        masterBoat.eulerAngles.y += (right) ? 0.03 : -0.03
-        
+        masterBoat.eulerAngles.y += (increment*0.01) //scaling down increment
+
         self.rootNode.addChildNode(masterBoat)
     }
     
