@@ -22,9 +22,17 @@ class GameScene : SCNScene{
     //Player node
     var masterBoat = SCNNode()
     
+    //Player particle system
+    var waterParticle = SCNNode()
+    
     //Terrain generation map array [1,2,3,4]
     var terrainPlane = [SCNNode]()
     let planeLength: Float = 100
+    
+    //Obstacles array
+    var obstacleArray = [SCNNode]()
+    
+    
     
     //MARK: Switch on game state engine
     var state : gameState = .isLaunched{
@@ -40,9 +48,13 @@ class GameScene : SCNScene{
                 applyPhysics(boat: masterBoat)
                 //move master boat to origin of ocean
                 masterBoat.presentation.position = SCNVector3(planeLength/4,0,planeLength/4)
-                
-                
-                
+                //get and apply water particle to masterBoat, moving back the position of particle node
+                waterParticle = generateWaterParticle()
+                masterBoat.addChildNode(waterParticle)
+                waterParticle.position.z+=1.5 //setting particle system behind boat
+                waterParticle.position.y-=0.5
+                //setting game state to isPlaying after game genereration
+                state = .isPlaying
                 break
             case .isPlaying:
                 break
@@ -73,28 +85,15 @@ class GameScene : SCNScene{
         boat.physicsBody?.isAffectedByGravity = false
         //friction kept as so ship does not accelerate exponentionally
         boat.physicsBody?.angularDamping = 0.4
-        boat.physicsBody?.damping = 0.3
-    }
-    
-    func fallApart(boat: SCNNode){
-        //remove overall node physics first
-        boat.presentation.physicsBody = nil
-        for boatPart in boat.childNodes{
-            //dynamic physics if geometry exists ( camera has no physics )
-            if(boatPart.name != "camera"){
-                boatPart.presentation.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boatPart.geometry!, options: nil))
-                //gravity true
-                boatPart.presentation.physicsBody?.isAffectedByGravity = true
-            }
-        }
+        boat.physicsBody?.damping = 0.4
     }
     
     //moves boat forward based on next world z position
     func moveMasterBoat(){
-            //new vector for next position
-            let vectorNew = getZForward(node: masterBoat.presentation)
-            //applying new vector force
-            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
+        //new vector for next position
+        let vectorNew = getZForward(node: masterBoat.presentation)
+        //applying new vector force
+        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
     }
     
     
@@ -105,13 +104,13 @@ class GameScene : SCNScene{
     
     //rotates the boat based on user touch
     func rotateBoat(increment: Float){
-            //rotation of master boat
-            //singling out and reapplying presentation positon after euler rotation
-            let position = masterBoat.presentation.position
-
-            masterBoat.eulerAngles.y += (increment*0.01) //scaling down increment
-
-            masterBoat.position = position
+        //rotation of master boat
+        //singling out and reapplying presentation positon after euler rotation
+        let position = masterBoat.presentation.position
+                
+        masterBoat.eulerAngles.y += (increment*0.01) //scaling down increment
+        
+        masterBoat.position = position
     }
     
     
@@ -131,15 +130,43 @@ class GameScene : SCNScene{
         
         //Loading in camera
         gameCamera = self.rootNode.childNode(withName: "camera", recursively: true)
-    
+        
+        //Build terrain
+        terrainGeneration()
+        
         //coloring background
         self.background.contents = UIColor(colorLiteralRed: 171/255, green: 203/255, blue: 1, alpha: 1)
         
-        //generate terrain
-        terrainGeneration()
     }
     
     //MARK: Background / Terrain
+    
+    func generateWaterParticle() -> SCNNode{
+        
+        //manual particle system editor
+        let waterParticle = SCNParticleSystem()
+        waterParticle.loops = true
+        waterParticle.birthRate = 800
+        waterParticle.emissionDuration = 0.01
+        waterParticle.spreadingAngle = 90
+        waterParticle.particleDiesOnCollision = true
+        waterParticle.particleLifeSpan = 0.03
+        waterParticle.particleLifeSpanVariation = 1
+        waterParticle.particleVelocity = 1
+        waterParticle.particleVelocityVariation = 5
+        waterParticle.particleSize = 0.03
+        waterParticle.isAffectedByGravity = false
+        waterParticle.stretchFactor = 0.03
+
+        //waterParticle.particleColor = UIColor.blue
+        
+        //applying water particle to node for position changes
+        let waterParticleNode = SCNNode()
+        waterParticleNode.addParticleSystem(waterParticle)
+        return waterParticleNode
+        
+    }
+    
     func terrainGeneration(){
         for index in 0..<9{
             let seaPlane = generateTerrain()
@@ -197,7 +224,7 @@ class GameScene : SCNScene{
     func animateTerrain(){
         for plane in terrainPlane{
             plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 5, y: 0, z: 0, duration: 3), SCNAction.moveBy(x: -5, y: 0, z: 0, duration: 5)])))
-             plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
+            plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
         }
     }
     func manageTerrain(){
@@ -237,7 +264,7 @@ class GameScene : SCNScene{
     func generateTerrain() -> SCNNode {
         //add ocean, perlin noise generation from http://www.rogerboesch.com:2368/scenekit-tutorial-series-from-zero-to-hero/
         
-        let seaPlane = RBTerrain(width: Int(planeLength), length: Int(planeLength), scale: 100)
+        let seaPlane = RBTerrain(width: Int(planeLength), length: Int(planeLength), scale: 95)
         
         let generator = RBPerlinNoiseGenerator(seed: nil)
         seaPlane.formula = {(x: Int32, y: Int32) in
@@ -249,7 +276,48 @@ class GameScene : SCNScene{
         seaPlane.create(withImage: customImage )
         return seaPlane
     }
-    
+    //MARK: Game Objects, Buoy generation
+    func generateBuoy() -> SCNNode{
+        //load in scn file of buoy
+        let buoyScene = SCNScene(named: "Buoy.scn")
+        let buoyNode = SCNNode()
+        //applying scene objets to node
+        for buoyPart in (buoyScene?.rootNode.childNodes)!{
+            buoyNode.addChildNode(buoyPart)
+        }
+        return buoyNode
+    }
+    func manageObstacles(){
+       // handles loading in and deleting of Obstacles
+       
+        //right now max Obstacle count is 1
+        
+        //spawn in obstacles if array count is lower than max
+        if(obstacleArray.count < 1){
+            //optional if masterBoat exists yet
+            let newBuoy = generateBuoy()
+            //set position of buoy in from of masterBoat ( masterBoat exists )
+            
+            //setting location of trajectory
+            newBuoy.position = masterBoat.position
+            //splitting the position in x and z raidus (min: 10)
+            newBuoy.position.z -= Float(10 + Int(arc4random_uniform(10)))
+            newBuoy.position.x += (Int(arc4random_uniform(1))==1) ? Float(Int(arc4random_uniform(3))) : -Float(Int(arc4random_uniform(3)))
+            
+            //adding new Obstacle, array and scene
+            obstacleArray.append(newBuoy)
+            self.rootNode.addChildNode(newBuoy)
+        }
+        //handling in despawn of obstacles
+        for index in 0..<obstacleArray.count{
+            //despawning of obstacle is behind boat by 10
+            if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
+                obstacleArray[index].removeFromParentNode()
+                obstacleArray.remove(at: index)
+            }
+        }
+        
+    }
     //MARK: Camera functions
     func cameraFollow(){
         let masterBoatPosition = masterBoat.presentation.position

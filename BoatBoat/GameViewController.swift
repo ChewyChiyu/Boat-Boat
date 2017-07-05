@@ -33,7 +33,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         //gameView.autoenablesDefaultLighting = true
         gameView.showsStatistics = true
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
-        //gameView.debugOptions = SCNDebugOptions.showWireframe
+        gameView.debugOptions = SCNDebugOptions.showWireframe
         
         //Loading in Scene
         gameScene = GameScene()
@@ -49,13 +49,17 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     
     //MARK: Render delegate
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        //only render while in game
+        if(gameScene.state == .isPlaying){
         //handle movement of masterBoat
         gameScene.moveMasterBoat()
         //handle management of terrain
         gameScene.manageTerrain()
+        //handle management of Obstacles
+        gameScene.manageObstacles()
         //handle custom camera control
         gameScene.cameraFollow()
-        
+        }
     }
     
     //MARK: User Interaction
