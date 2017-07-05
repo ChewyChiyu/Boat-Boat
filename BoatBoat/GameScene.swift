@@ -91,10 +91,10 @@ class GameScene : SCNScene{
     
     //moves boat forward based on next world z position
     func moveMasterBoat(){
-            //new vector for next position
-            let vectorNew = getZForward(node: masterBoat.presentation)
-            //applying new vector force
-            masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.2,0,-vectorNew.z*0.2), asImpulse: true)
+        //new vector for next position
+        let vectorNew = getZForward(node: masterBoat.presentation)
+        //applying new vector force
+        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
     }
     
     
@@ -105,16 +105,14 @@ class GameScene : SCNScene{
     
     //rotates the boat based on user touch
     func rotateBoat(increment: Float){
-            
         //rotation of master boat
-
-        //Removal of nodes and adding back after applying eular angles so physics body doesnt derp out
         
-        masterBoat.removeFromParentNode()
+        //singling out presentation position and reapplying after euler rotation
+        let position = masterBoat.presentation.position
         
         masterBoat.eulerAngles.y += (increment*0.01) //scaling down increment
-
-        self.rootNode.addChildNode(masterBoat)
+        
+        masterBoat.position = position
     }
     
     
@@ -134,7 +132,7 @@ class GameScene : SCNScene{
         
         //Loading in camera
         gameCamera = self.rootNode.childNode(withName: "camera", recursively: true)
-    
+        
         //coloring background
         self.background.contents = UIColor(colorLiteralRed: 171/255, green: 203/255, blue: 1, alpha: 1)
         
@@ -200,7 +198,7 @@ class GameScene : SCNScene{
     func animateTerrain(){
         for plane in terrainPlane{
             plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 5, y: 0, z: 0, duration: 3), SCNAction.moveBy(x: -5, y: 0, z: 0, duration: 5)])))
-             plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
+            plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
         }
     }
     func manageTerrain(){
