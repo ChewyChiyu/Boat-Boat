@@ -11,13 +11,13 @@ import SceneKit
 //MARK: Game State Cases
 
 enum gameState{
-    case isLaunched, startAnimation, isPlaying, isEnded
+    case isLaunched, startAnimation, isPlaying, isEnded, isReseting
 }
 
-class GameScene : SCNScene{
+class GameScene : SCNScene, SCNPhysicsContactDelegate{
     
     
-    var gameCamera : SCNNode!
+    var gameCamera = SCNNode()
     
     //Player node
     var masterBoat = SCNNode()
@@ -31,16 +31,16 @@ class GameScene : SCNScene{
     
     //Obstacles array
     var obstacleArray = [SCNNode]()
-    var numObstacles = 10 //initial value
+    var numObstacles = 7 //initial value
     
-    //temp lighting for animation
-    var tempLight : SCNNode!
+    var gameViewController : GameViewController!
     
     //MARK: Switch on game state engine
     var state : gameState = .isLaunched{
         didSet{
             switch(state){
             case .isLaunched:
+                print("islaunched")
                 //MARK: isLaunched game state
                 //build boat
                 masterBoat = buildBoat()
@@ -51,33 +51,70 @@ class GameScene : SCNScene{
                 //move master boat to origin of ocean
                 masterBoat.presentation.position = SCNVector3(planeLength/4,0,planeLength/4)
                 //get and apply water particle to masterBoat, moving back the position of particle node
-                waterParticle = generateWaterParticle()
-                masterBoat.addChildNode(waterParticle)
-                waterParticle.position.z+=1.5 //setting particle system behind boat
-                waterParticle.position.y-=0.5
                 
                 //adding light, spotlight facing down for eerie effect
                 let probe = self.rootNode.childNode(withName: "omni", recursively: true)
-                masterBoat.addChildNode(probe!)
-                probe?.position.y += 60
-                probe?.position.z -= 15 //acocunting for movement
+                gameCamera.addChildNode(probe!)
+                probe?.position.y += 40
+                probe?.position.z -= 10 //acocunting for movement
                 break
             case .startAnimation:
+                //sequence for starting animation
+                
                 //setting up camera for animation
-                gameCamera.runAction(SCNAction.move(to:  SCNVector3(masterBoat.position.x,masterBoat.position.y+10,masterBoat.position.z+16), duration: 3), completionHandler: {
+                gameCamera.runAction(SCNAction.move(to:  SCNVector3(masterBoat.position.x,masterBoat.position.y+10,masterBoat.position.z+16), duration: 1.5), completionHandler: {
                     
                     self.state = .isPlaying
                 })
                 break
             case .isPlaying:
                 print("isPlaying")
+                //add water particle after start animation has started
+                waterParticle = generateWaterParticle()
+                masterBoat.addChildNode(waterParticle)
+                waterParticle.position.z+=1.5 //setting particle system behind boat
+                waterParticle.position.y-=0.5
+                
                 break
             case .isEnded:
+                print("yo")
                 break
+            case .isReseting:
+                
+                //reseting the scene
+                self.gameViewController.resetScene()
+                
+                break
+                
             }
         }
     }
+    
+    
     //MARK: Boat functions
+    
+    func fallApart(object: SCNNode){
+        //remove parent physicsbody first
+        object.physicsBody = nil
+        
+        for objectPart in object.childNodes{
+            //wrap boat node in dynamic box physics body
+            var min = SCNVector3Zero
+            var max = SCNVector3Zero
+            min = masterBoat.boundingBox.min
+            max = masterBoat.boundingBox.max
+            let w = CGFloat(max.x - min.x)
+            let h = CGFloat(max.y - min.y)
+            let l =  CGFloat( max.z - min.z)
+            let boxShape = SCNBox (width: w , height: h , length: l, chamferRadius: 0.0)
+            
+            objectPart.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boxShape, options: nil))
+            
+            //gravity false
+            objectPart.physicsBody?.isAffectedByGravity = true
+        }
+        
+    }
     
     func buildBoat() -> SCNNode{
         //load in blueprint
@@ -88,15 +125,28 @@ class GameScene : SCNScene{
         for boatPart in (boatBluePrint?.rootNode.childNodes)!{
             boat.addChildNode(boatPart)
         }
+        //naming boat
+        boat.name = "MasterBoat"
         //returning node
         return boat
     }
     
     func applyPhysics(boat: SCNNode){
         //wrap boat node in dynamic box physics body
-        boat.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: SCNBox(width: CGFloat(boat.scale.x), height: CGFloat(boat.scale.y), length: CGFloat(boat.scale.z), chamferRadius: 0), options: nil))
+        var min = SCNVector3Zero
+        var max = SCNVector3Zero
+        min = masterBoat.boundingBox.min
+        max = masterBoat.boundingBox.max
+        let w = CGFloat(max.x - min.x)
+        let h = CGFloat(max.y - min.y)
+        let l =  CGFloat( max.z - min.z)
+        let boxShape = SCNBox (width: w , height: h , length: l, chamferRadius: 0.0)
+        
+        boat.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boxShape, options: nil))
+        
         //gravity false
         boat.physicsBody?.isAffectedByGravity = false
+        boat.physicsBody?.contactTestBitMask = Int(UInt32.max)
         //friction kept as so ship does not accelerate exponentionally
         boat.physicsBody?.angularDamping = 0.4
         boat.physicsBody?.damping = 0.4
@@ -109,10 +159,10 @@ class GameScene : SCNScene{
         
         //Setting physics position to master postion
         masterBoat.position = masterBoat.presentation.position
-
+        
         //applying new vector force
-        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.2,0,-vectorNew.z*0.2), asImpulse: true)
-    
+        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
+        
         //Setting physics position to master postion
         masterBoat.position = masterBoat.presentation.position
         
@@ -130,7 +180,7 @@ class GameScene : SCNScene{
         //singling out and reapplying presentation positon after euler rotation
         
         let position = masterBoat.presentation.position
-
+        
         //resting pitch of euler angle
         masterBoat.eulerAngles.x = 0
         
@@ -139,261 +189,316 @@ class GameScene : SCNScene{
         masterBoat.position = position
     }
     
-    
-    //MARK: Constructor
-    
-    override init() {
-        super.init()
+    //MARK: Physics Contact Delegate
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        let contactA = contact.nodeA
+        let contactB = contact.nodeB
+        //handling contact stuff over here
         
-        //transfer nodes from gamescene.scn
         
-        let scene = SCNScene(named: "GameScene.scn")
-        
-        //loading in all nodes from scn file
-        for childNode in (scene?.rootNode.childNodes)!{
-            self.rootNode.addChildNode(childNode)
+        // searching if masterBoat contacts an enemy
+        if(contactA.name == "MasterBoat" && contactB.name == "enemy"){
+            //setting state to isEnded
+            state = .isEnded
+            //blow up ship
+            fallApart(object: contactA)
+            
+        }
+        if(contactB.name == "MasterBoat" && contactA.name == "enemy"){
+                //setting state to isEnded
+                state = .isEnded
+                //blow up ship
+                fallApart(object: contactB)
         }
         
-        //Loading in camera
-        gameCamera = self.rootNode.childNode(withName: "camera", recursively: true)
-        //setting initial position of camera
-        gameCamera.position = SCNVector3(0,10,30)
-        //Build terrain
-        terrainGeneration()
+        //MARK: Constructor
         
-        //coloring background
-        self.background.contents = UIColor(colorLiteralRed: 171/255, green: 203/255, blue: 1, alpha: 1)
-        
-    }
-    
-    //MARK: Background / Terrain
-    
-    func generateWaterParticle() -> SCNNode{
-        
-        //manual particle system editor
-        let waterParticle = SCNParticleSystem()
-        waterParticle.loops = true
-        waterParticle.birthRate = 800
-        waterParticle.emissionDuration = 0.01
-        waterParticle.spreadingAngle = 90
-        waterParticle.particleDiesOnCollision = true
-        waterParticle.particleLifeSpan = 0.03
-        waterParticle.particleLifeSpanVariation = 1
-        waterParticle.particleVelocity = 1
-        waterParticle.particleVelocityVariation = 5
-        waterParticle.particleSize = 0.03
-        waterParticle.isAffectedByGravity = false
-        waterParticle.stretchFactor = 0.03
-
-        //waterParticle.particleColor = UIColor.blue
-        
-        //applying water particle to node for position changes
-        let waterParticleNode = SCNNode()
-        waterParticleNode.addParticleSystem(waterParticle)
-        return waterParticleNode
-        
-    }
-    
-    func terrainGeneration(){
-        for index in 0..<9{
-            let seaPlane = generateTerrain()
-            //switching for position
-            switch(index){
-            //initial position of sea terrain tiles, a 9x9 grid
-            case 0:
-                //middle origin
-                seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,-planeLength*0.90/2)
-                break
-            case 1:
-                //middle origin, right
-                seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,-(planeLength*0.90)/2)
-                break
-            case 2:
-                //middle origin, left
-                seaPlane.position = SCNVector3(-planeLength*0.90,-3,-(planeLength*0.90)/2)
-                break
-            case 3:
-                //top origin
-                seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,-planeLength*0.90)
-                break
-            case 4:
-                //top origin, right
-                seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,-planeLength*0.90)
-                break
-            case 5:
-                //top origin, left
-                seaPlane.position = SCNVector3(-planeLength*0.90,-3,-planeLength*0.90)
-                break
-            case 6:
-                //bottom origin
-                seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,(planeLength*0.90)/2)
-                break
-            case 7:
-                //bottom origin, right
-                seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,(planeLength*0.90)/2)
-                break
-            case 8:
-                //bottom origin, left
-                seaPlane.position = SCNVector3(-(planeLength*0.90),-3,(planeLength*0.90)/2)
-                break
-            default:
-                seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,planeLength*0.90/2)
-                break
+        override init() {
+            super.init()
+            
+            //transfer nodes from gamescene.scn
+            
+            let scene = SCNScene(named: "GameScene.scn")
+            
+            //loading in all nodes from scn file
+            for childNode in (scene?.rootNode.childNodes)!{
+                self.rootNode.addChildNode(childNode)
             }
-            //adding to an array and child nodes for ease of access
-            terrainPlane.append(seaPlane)
-            self.rootNode.addChildNode(seaPlane)
+            
+            //Loading in camera
+            gameCamera = self.rootNode.childNode(withName: "camera", recursively: true)!
+            //setting initial position of camera
+            gameCamera.position = SCNVector3(0,10,30)
+            //Build terrain
+            terrainGeneration()
+            
+            
+            //setting physics contact delegate to self
+            self.physicsWorld.contactDelegate = self
+            
+            //coloring background
+            self.background.contents = UIColor(colorLiteralRed: 171/255, green: 203/255, blue: 1, alpha: 1)
+            
         }
         
-        //animate terrain
-        animateTerrain()
-    }
-    func animateTerrain(){
-        for plane in terrainPlane{
-            plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 5, y: 0, z: 0, duration: 3), SCNAction.moveBy(x: -5, y: 0, z: 0, duration: 5)])))
-            plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
+        //MARK: Background / Terrain
+        
+        func generateWaterParticle() -> SCNNode{
+            
+            //manual particle system editor
+            let waterParticle = SCNParticleSystem()
+            waterParticle.loops = true
+            waterParticle.birthRate = 800
+            waterParticle.emissionDuration = 0.01
+            waterParticle.spreadingAngle = 90
+            waterParticle.particleDiesOnCollision = true
+            waterParticle.particleLifeSpan = 0.03
+            waterParticle.particleLifeSpanVariation = 1
+            waterParticle.particleVelocity = 1
+            waterParticle.particleVelocityVariation = 5
+            waterParticle.particleSize = 0.03
+            waterParticle.isAffectedByGravity = false
+            waterParticle.stretchFactor = 0.03
+            
+            //waterParticle.particleColor = UIColor.blue
+            
+            //applying water particle to node for position changes
+            let waterParticleNode = SCNNode()
+            waterParticleNode.addParticleSystem(waterParticle)
+            return waterParticleNode
+            
         }
-    }
-    func manageTerrain(){
-        //manages movement / respawn / positioning of sea planes
-        let displacement = (planeLength*0.90)
-        //for determining what direction to move planes
-        let vectorNew = getZForward(node: masterBoat.presentation)
-        for plane in terrainPlane{
+        
+        func terrainGeneration(){
+            for index in 0..<9{
+                let seaPlane = generateTerrain()
+                //switching for position
+                switch(index){
+                //initial position of sea terrain tiles, a 9x9 grid
+                case 0:
+                    //middle origin
+                    seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,-planeLength*0.90/2)
+                    break
+                case 1:
+                    //middle origin, right
+                    seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,-(planeLength*0.90)/2)
+                    break
+                case 2:
+                    //middle origin, left
+                    seaPlane.position = SCNVector3(-planeLength*0.90,-3,-(planeLength*0.90)/2)
+                    break
+                case 3:
+                    //top origin
+                    seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,-planeLength*0.90)
+                    break
+                case 4:
+                    //top origin, right
+                    seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,-planeLength*0.90)
+                    break
+                case 5:
+                    //top origin, left
+                    seaPlane.position = SCNVector3(-planeLength*0.90,-3,-planeLength*0.90)
+                    break
+                case 6:
+                    //bottom origin
+                    seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,(planeLength*0.90)/2)
+                    break
+                case 7:
+                    //bottom origin, right
+                    seaPlane.position = SCNVector3((planeLength*0.90)/2,-3,(planeLength*0.90)/2)
+                    break
+                case 8:
+                    //bottom origin, left
+                    seaPlane.position = SCNVector3(-(planeLength*0.90),-3,(planeLength*0.90)/2)
+                    break
+                default:
+                    seaPlane.position = SCNVector3(-(planeLength*0.90)/2,-3,planeLength*0.90/2)
+                    break
+                }
+                //adding to an array and child nodes for ease of access
+                terrainPlane.append(seaPlane)
+                self.rootNode.addChildNode(seaPlane)
+            }
+            
+            //animate terrain
+            animateTerrain()
+        }
+        func animateTerrain(){
+            for plane in terrainPlane{
+                plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 5, y: 0, z: 0, duration: 3), SCNAction.moveBy(x: -5, y: 0, z: 0, duration: 5)])))
+                plane.runAction(SCNAction.repeatForever(SCNAction.sequence([SCNAction.moveBy(x: 0, y: 1.5, z: 0, duration: 3), SCNAction.moveBy(x: 0, y: -1.5, z: 0, duration: 5)])))
+            }
+        }
+        func manageTerrain(){
+            //manages movement / respawn / positioning of sea planes
+            let displacement = (planeLength*0.90)
+            //for determining what direction to move planes
+            let vectorNew = getZForward(node: masterBoat.presentation)
+            for plane in terrainPlane{
+                let masterBoatPosition = masterBoat.presentation.position
+                //z movement up
+                if(plane.position.z - masterBoatPosition.z > planeLength/4){
+                    if(vectorNew.z > 0){ //heading z positive direction
+                        plane.position.z -= (displacement*2.5) //some trail and error displacement math
+                    }
+                }
+                //z movement down
+                if(plane.position.z+planeLength - masterBoatPosition.z < -planeLength/4){
+                    if(vectorNew.z < 0){ //heading z positive direction
+                        plane.position.z += (displacement*2.5) //some trail and error displacement math
+                    }
+                }
+                //x movement, left
+                if(plane.position.x - masterBoatPosition.x > planeLength/4){
+                    if(vectorNew.x > 0){ //heading x positive direction
+                        plane.position.x -= (displacement*2.5) //some trail and error displacement math
+                    }
+                }
+                //x movement, left
+                if(plane.position.x+planeLength - masterBoatPosition.x < -planeLength/4){
+                    if(vectorNew.x < 0){ //heading x negative direction
+                        plane.position.x += (displacement*2.5) //some trail and error displacement math
+                    }
+                }
+            }
+            
+        }
+        func generateTerrain() -> SCNNode {
+            //add ocean, perlin noise generation from http://www.rogerboesch.com:2368/scenekit-tutorial-series-from-zero-to-hero/
+            
+            let seaPlane = RBTerrain(width: Int(planeLength), length: Int(planeLength), scale: 95)
+            
+            let generator = RBPerlinNoiseGenerator(seed: nil)
+            seaPlane.formula = {(x: Int32, y: Int32) in
+                return generator.valueFor(x: x, y: y)
+            }
+            
+            //custom image of geometry textures
+            let customImage = UIImage(named: "Water")
+            seaPlane.create(withImage: customImage )
+            return seaPlane
+        }
+        //MARK: Game Objects, Buoy generation
+        
+        func manageObstacles(){
+            // handles loading in and deleting of Obstacles
+            
+            //right now max Obstacle count is 7
+            
+            //spawn in obstacles if array count is lower than max
+            if(obstacleArray.count < numObstacles){
+                
+                //Switching arc random for a random obstacle
+                var obstacle = SCNScene()
+                var name = String()
+                switch(arc4random_uniform(8)){
+                case 0: // a buoy obstacle
+                    obstacle = SCNScene(named: "Buoy.scn")!
+                    name = "enemy"
+                    break
+                case 1:
+                    obstacle = SCNScene(named: "Island.scn")!
+                    name = "enemy"
+                    break
+                case 2:
+                    obstacle = SCNScene(named: "ShipWreck.scn")!
+                    break
+                case 3:
+                    obstacle = SCNScene(named: "ShipWreck2.scn")!
+                    name = "save"
+                    break
+                case 4:
+                    obstacle = SCNScene(named: "ShipWreck3.scn")!
+                    name = "save"
+                    break
+                case 5:
+                    obstacle = SCNScene(named: "ShipWreck4.scn")!
+                    name = "save"
+                    break
+                case 6:
+                    obstacle = SCNScene(named: "ShipWreck5.scn")!
+                    name = "enemy"
+                    break
+                case 7:
+                    obstacle = SCNScene(named: "ShipWreck6.scn")!
+                    name = "enemy"
+                    break
+                    
+                default:
+                    break
+                }
+                //clearing light from scene
+                
+                let obstacleNode = SCNNode()
+                //applying obstacle scene to obstacle node
+                for childPart in obstacle.rootNode.childNodes{
+                    obstacleNode.addChildNode(childPart)
+                }
+                
+                //setting name of obstacle
+                obstacleNode.name = name
+                
+                //setting location of trajectory
+                obstacleNode.position = masterBoat.position
+                
+                //splitting the position in x and z raidus (min: 30)
+                obstacleNode.position.z -= Float(70 + Int(arc4random_uniform(100)))
+                obstacleNode.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(20))) : -Float(Int(arc4random_uniform(20)))
+                //Applying physics body to node
+                
+                var min = SCNVector3Zero
+                var max = SCNVector3Zero
+                min = obstacleNode.boundingBox.min
+                max = obstacleNode.boundingBox.max
+                let w = CGFloat(max.x - min.x)
+                let h = CGFloat(max.y - min.y)
+                let l =  CGFloat( max.z - min.z)
+                let boxShape = SCNBox (width: w*0.90 , height: h , length: l*0.90, chamferRadius: 0.0)
+                
+                obstacleNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: boxShape, options: nil))
+                // no gravity
+                obstacleNode.physicsBody?.isAffectedByGravity = false
+                // no collisions
+                obstacleNode.physicsBody?.collisionBitMask = 0
+                //contact delegate = default
+                obstacleNode.physicsBody?.contactTestBitMask = Int(UInt32.max)
+                
+                
+                
+                //adding new Obstacle, array and scene
+                obstacleArray.append(obstacleNode)
+                self.rootNode.addChildNode(obstacleNode)
+                
+                
+            }
+            
+            //handling in despawn of obstacles
+            for index in 0..<obstacleArray.count{
+                //despawning of obstacle is behind boat by 10
+                if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
+                    obstacleArray[index].removeFromParentNode()
+                    obstacleArray.remove(at: index)
+                    break
+                }
+            }
+            
+        }
+        //MARK: Camera functions
+        func cameraFollow(){
             let masterBoatPosition = masterBoat.presentation.position
-            //z movement up
-            if(plane.position.z - masterBoatPosition.z > planeLength/4){
-                if(vectorNew.z > 0){ //heading z positive direction
-                    plane.position.z -= (displacement*2.5) //some trail and error displacement math
-                }
-            }
-            //z movement down
-            if(plane.position.z+planeLength - masterBoatPosition.z < -planeLength/4){
-                if(vectorNew.z < 0){ //heading z positive direction
-                    plane.position.z += (displacement*2.5) //some trail and error displacement math
-                }
-            }
-            //x movement, left
-            if(plane.position.x - masterBoatPosition.x > planeLength/4){
-                if(vectorNew.x > 0){ //heading x positive direction
-                    plane.position.x -= (displacement*2.5) //some trail and error displacement math
-                }
-            }
-            //x movement, left
-            if(plane.position.x+planeLength - masterBoatPosition.x < -planeLength/4){
-                if(vectorNew.x < 0){ //heading x negative direction
-                    plane.position.x += (displacement*2.5) //some trail and error displacement math
-                }
-            }
+            //follow masterBoat from behind
+            gameCamera.position = SCNVector3(x: masterBoatPosition.x, y: masterBoatPosition.y+10, z: masterBoatPosition.z+16)
         }
         
-    }
-    func generateTerrain() -> SCNNode {
-        //add ocean, perlin noise generation from http://www.rogerboesch.com:2368/scenekit-tutorial-series-from-zero-to-hero/
         
-        let seaPlane = RBTerrain(width: Int(planeLength), length: Int(planeLength), scale: 95)
-        
-        let generator = RBPerlinNoiseGenerator(seed: nil)
-        seaPlane.formula = {(x: Int32, y: Int32) in
-            return generator.valueFor(x: x, y: y)
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
         
-        //custom image of geometry textures
-        let customImage = UIImage(named: "Water")
-        seaPlane.create(withImage: customImage )
-        return seaPlane
-    }
-    //MARK: Game Objects, Buoy generation
-    
-    func manageObstacles(){
-       // handles loading in and deleting of Obstacles
-       
-        //right now max Obstacle count is 10
         
-        //spawn in obstacles if array count is lower than max
-        if(obstacleArray.count < numObstacles){
-            
-            //Switching arc random for a random obstacle
-            var obstacle = SCNScene()
-            switch(arc4random_uniform(8)){
-            case 0: // a buoy obstacle
-                obstacle = SCNScene(named: "Buoy.scn")!
-                break
-            case 1:
-                obstacle = SCNScene(named: "Island.scn")!
-                break
-            case 2:
-                obstacle = SCNScene(named: "ShipWreck.scn")!
-                break
-            case 3:
-                obstacle = SCNScene(named: "ShipWreck2.scn")!
-                break
-            case 4:
-                obstacle = SCNScene(named: "ShipWreck3.scn")!
-                break
-            case 5:
-                obstacle = SCNScene(named: "ShipWreck4.scn")!
-                break
-            case 6:
-                obstacle = SCNScene(named: "ShipWreck5.scn")!
-                break
-            case 7:
-                obstacle = SCNScene(named: "ShipWreck6.scn")!
-                break
-
-            default:
-                break
-            }
-            //clearing light from scene
-            
-            let obstacleNode = SCNNode()
-            //applying obstacle scene to obstacle node
-            for childPart in obstacle.rootNode.childNodes{
-                obstacleNode.addChildNode(childPart)
-            }
-            
-            obstacleNode.geometry?.firstMaterial?.ambient.intensity = 0
-            //setting location of trajectory
-            obstacleNode.position = masterBoat.position
-            
-            //splitting the position in x and z raidus (min: 30)
-            obstacleNode.position.z -= Float(70 + Int(arc4random_uniform(100)))
-            obstacleNode.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(20))) : -Float(Int(arc4random_uniform(20)))
-            
-            //adding new Obstacle, array and scene
-            obstacleArray.append(obstacleNode)
-            self.rootNode.addChildNode(obstacleNode)
-
-           
-        }
         
-        //handling in despawn of obstacles
-        for index in 0..<obstacleArray.count{
-            //despawning of obstacle is behind boat by 10
-            if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
-                obstacleArray[index].removeFromParentNode()
-                obstacleArray.remove(at: index)
-                break
-            }
-        }
         
-    }
-    //MARK: Camera functions
-    func cameraFollow(){
-        let masterBoatPosition = masterBoat.presentation.position
-        //follow masterBoat from behind
-        gameCamera.position = SCNVector3(x: masterBoatPosition.x, y: masterBoatPosition.y+10, z: masterBoatPosition.z+16)
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    
-    
-    
-    
-    
+        
+        
+        
 }

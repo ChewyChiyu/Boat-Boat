@@ -9,9 +9,9 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
 
-
-class GameViewController: UIViewController, SCNSceneRendererDelegate{
+class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysicsContactDelegate{
     
     //MARK: Variables
     var gameScene : GameScene!
@@ -19,7 +19,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     
     // primary touch var, changable while touch moves
     var primaryTouch = CGPoint.zero
-    var firstTouch:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,16 +31,16 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         //gameView.allowsCameraControl = true
         gameView.autoenablesDefaultLighting = false
         gameView.showsStatistics = true
-        //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
+        gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
         //gameView.debugOptions = SCNDebugOptions.showWireframe
         
         //Loading in Scene
         gameScene = GameScene()
         gameView.scene = gameScene
+        gameScene.gameViewController = self
         
         //set render delegate to self
         gameView.delegate = self
-        
         //setting gameState t= isLaunch
         gameScene.state = .isLaunched
         
@@ -62,22 +61,45 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         }
     }
     
+    func resetScene(){
+        let newGameScene = GameScene()
+        gameScene = newGameScene
+        gameView.present(newGameScene, with: SKTransition.fade(withDuration: 2), incomingPointOfView: nil, completionHandler: {
+                resetVars()
+        
+        })
+        
+        func resetVars(){
+            gameScene.gameViewController = self
+            gameScene.state = .isLaunched
+        
+        }
+    }
+    
+   
+    
+    
     //MARK: User Interaction
     //Handles the rotation of the Master boat
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if(!firstTouch){
+        if(gameScene.state == .isLaunched){
             //set game Scene state to startAnimation
             gameScene.state = .startAnimation //triggers did set in gameState
-            firstTouch = true
         }
+        if(gameScene.state != .isEnded){
         primaryTouch = (touches.first?.location(in: gameView))!
+        }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if(gameScene.state != .isEnded){
         let locaiton = touches.first?.location(in: gameView)
-        //removing masterBoat form gameScene and adding it back after applying euler angle rotation
-
         gameScene.rotateBoat(increment: Float(locaiton!.x-primaryTouch.x))
         primaryTouch = locaiton!
+        }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //stopping game for tests
+        //gameScene.state = .isEnded
     }
     override var shouldAutorotate: Bool {
         return true
