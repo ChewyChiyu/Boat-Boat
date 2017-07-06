@@ -29,6 +29,7 @@
 		20F94F2C1F0DF27B009133C0 /* ShipWreck4.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F2B1F0DF27B009133C0 /* ShipWreck4.scn */; };
 		20F94F2F1F0DF34D009133C0 /* ShipWreck5.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F2E1F0DF34D009133C0 /* ShipWreck5.scn */; };
 		20F94F321F0DF516009133C0 /* ShipWreck6.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F311F0DF516009133C0 /* ShipWreck6.scn */; };
+		20FE7ABF1F0EE15500086E18 /* isPlayOverLay.sks in Resources */ = {isa = PBXBuildFile; fileRef = 20FE7ABE1F0EE15500086E18 /* isPlayOverLay.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		20F94F2B1F0DF27B009133C0 /* ShipWreck4.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck4.scn; sourceTree = "<group>"; };
 		20F94F2E1F0DF34D009133C0 /* ShipWreck5.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck5.scn; sourceTree = "<group>"; };
 		20F94F311F0DF516009133C0 /* ShipWreck6.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck6.scn; sourceTree = "<group>"; };
+		20FE7ABE1F0EE15500086E18 /* isPlayOverLay.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = isPlayOverLay.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				2089C5411F0B08FA005F877B /* ViewControllers */,
 				2089C5481F0B718A005F877B /* Utilities */,
 				2089C5401F0B08CD005F877B /* SceneKit */,
+				20FE7AC01F0EE15800086E18 /* SpriteKit */,
 				20EBA7981F0ADFB700927DDD /* BoatBoatTests */,
 				20EBA7A31F0ADFB700927DDD /* BoatBoatUITests */,
 				20EBA7801F0ADFB700927DDD /* Products */,
@@ -195,6 +198,15 @@
 				20EBA7A61F0ADFB700927DDD /* Info.plist */,
 			);
 			path = BoatBoatUITests;
+			sourceTree = "<group>";
+		};
+		20FE7AC01F0EE15800086E18 /* SpriteKit */ = {
+			isa = PBXGroup;
+			children = (
+				20FE7ABE1F0EE15500086E18 /* isPlayOverLay.sks */,
+			);
+			name = SpriteKit;
+			path = BoatBoat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +323,7 @@
 				20F94F281F0DF122009133C0 /* ShipWreck2.scn in Resources */,
 				208DFC541F0E19EA008D3368 /* RedBoat.scn in Resources */,
 				20EBA7C11F0AF48C00927DDD /* Boat.scn in Resources */,
+				20FE7ABF1F0EE15500086E18 /* isPlayOverLay.sks in Resources */,
 				20283C931F0DEF3900837ABF /* ShipWreck.scn in Resources */,
 				20F94F321F0DF516009133C0 /* ShipWreck6.scn in Resources */,
 				20F94F2C1F0DF27B009133C0 /* ShipWreck4.scn in Resources */,

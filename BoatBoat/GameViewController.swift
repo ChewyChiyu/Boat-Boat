@@ -99,8 +99,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //stopping game for tests
-        //gameScene.state = .isEnded
-    }
+   }
     override var shouldAutorotate: Bool {
         return true
     }
