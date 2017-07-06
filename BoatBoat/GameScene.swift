@@ -11,7 +11,7 @@ import SceneKit
 //MARK: Game State Cases
 
 enum gameState{
-    case isLaunched, isPlaying, isEnded
+    case isLaunched, startAnimation, isPlaying, isEnded
 }
 
 class GameScene : SCNScene{
@@ -31,8 +31,10 @@ class GameScene : SCNScene{
     
     //Obstacles array
     var obstacleArray = [SCNNode]()
-    var numObstacles = 30 //initial value
+    var numObstacles = 10 //initial value
     
+    //temp lighting for animation
+    var tempLight : SCNNode!
     
     //MARK: Switch on game state engine
     var state : gameState = .isLaunched{
@@ -53,10 +55,22 @@ class GameScene : SCNScene{
                 masterBoat.addChildNode(waterParticle)
                 waterParticle.position.z+=1.5 //setting particle system behind boat
                 waterParticle.position.y-=0.5
-                //setting game state to isPlaying after game genereration
-                state = .isPlaying
+                
+                //adding light, spotlight facing down for eerie effect
+                let probe = self.rootNode.childNode(withName: "omni", recursively: true)
+                masterBoat.addChildNode(probe!)
+                probe?.position.y += 60
+                probe?.position.z -= 15 //acocunting for movement
+                break
+            case .startAnimation:
+                //setting up camera for animation
+                gameCamera.runAction(SCNAction.move(to:  SCNVector3(masterBoat.position.x,masterBoat.position.y+10,masterBoat.position.z+16), duration: 3), completionHandler: {
+                    
+                    self.state = .isPlaying
+                })
                 break
             case .isPlaying:
+                print("isPlaying")
                 break
             case .isEnded:
                 break
@@ -67,7 +81,7 @@ class GameScene : SCNScene{
     
     func buildBoat() -> SCNNode{
         //load in blueprint
-        let boatBluePrint = SCNScene(named: "Boat.scn")
+        let boatBluePrint = SCNScene(named: "RedBoat.scn")
         //clean boat node
         let boat = SCNNode()
         //apply boatBluePrint to node
@@ -97,11 +111,11 @@ class GameScene : SCNScene{
         masterBoat.position = masterBoat.presentation.position
 
         //applying new vector force
-        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.1,0,-vectorNew.z*0.1), asImpulse: true)
+        masterBoat.physicsBody?.applyForce(SCNVector3(-vectorNew.x*0.2,0,-vectorNew.z*0.2), asImpulse: true)
     
         //Setting physics position to master postion
         masterBoat.position = masterBoat.presentation.position
-
+        
     }
     
     
@@ -142,7 +156,8 @@ class GameScene : SCNScene{
         
         //Loading in camera
         gameCamera = self.rootNode.childNode(withName: "camera", recursively: true)
-        
+        //setting initial position of camera
+        gameCamera.position = SCNVector3(0,10,30)
         //Build terrain
         terrainGeneration()
         
@@ -289,36 +304,67 @@ class GameScene : SCNScene{
         return seaPlane
     }
     //MARK: Game Objects, Buoy generation
-    func generateBuoy() -> SCNNode{
-        //load in scn file of buoy
-        let buoyScene = SCNScene(named: "Buoy.scn")
-        let buoyNode = SCNNode()
-        //applying scene objets to node
-        for buoyPart in (buoyScene?.rootNode.childNodes)!{
-            buoyNode.addChildNode(buoyPart)
-        }
-        return buoyNode
-    }
+    
     func manageObstacles(){
        // handles loading in and deleting of Obstacles
        
-        //right now max Obstacle count is 1
+        //right now max Obstacle count is 10
         
         //spawn in obstacles if array count is lower than max
         if(obstacleArray.count < numObstacles){
-            //optional if masterBoat exists yet
-            let newBuoy = generateBuoy()
-            //set position of buoy in from of masterBoat ( masterBoat exists )
             
+            //Switching arc random for a random obstacle
+            var obstacle = SCNScene()
+            switch(arc4random_uniform(8)){
+            case 0: // a buoy obstacle
+                obstacle = SCNScene(named: "Buoy.scn")!
+                break
+            case 1:
+                obstacle = SCNScene(named: "Island.scn")!
+                break
+            case 2:
+                obstacle = SCNScene(named: "ShipWreck.scn")!
+                break
+            case 3:
+                obstacle = SCNScene(named: "ShipWreck2.scn")!
+                break
+            case 4:
+                obstacle = SCNScene(named: "ShipWreck3.scn")!
+                break
+            case 5:
+                obstacle = SCNScene(named: "ShipWreck4.scn")!
+                break
+            case 6:
+                obstacle = SCNScene(named: "ShipWreck5.scn")!
+                break
+            case 7:
+                obstacle = SCNScene(named: "ShipWreck6.scn")!
+                break
+
+            default:
+                break
+            }
+            //clearing light from scene
+            
+            let obstacleNode = SCNNode()
+            //applying obstacle scene to obstacle node
+            for childPart in obstacle.rootNode.childNodes{
+                obstacleNode.addChildNode(childPart)
+            }
+            
+            obstacleNode.geometry?.firstMaterial?.ambient.intensity = 0
             //setting location of trajectory
-            newBuoy.position = masterBoat.position
+            obstacleNode.position = masterBoat.position
+            
             //splitting the position in x and z raidus (min: 30)
-            newBuoy.position.z -= Float(70 + Int(arc4random_uniform(60)))
-            newBuoy.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(30))) : -Float(Int(arc4random_uniform(30)))
+            obstacleNode.position.z -= Float(70 + Int(arc4random_uniform(100)))
+            obstacleNode.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(20))) : -Float(Int(arc4random_uniform(20)))
             
             //adding new Obstacle, array and scene
-            obstacleArray.append(newBuoy)
-            self.rootNode.addChildNode(newBuoy)
+            obstacleArray.append(obstacleNode)
+            self.rootNode.addChildNode(obstacleNode)
+
+           
         }
         
         //handling in despawn of obstacles

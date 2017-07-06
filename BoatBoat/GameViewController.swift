@@ -19,7 +19,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     
     // primary touch var, changable while touch moves
     var primaryTouch = CGPoint.zero
-    
+    var firstTouch:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         gameView.isPlaying = true
         
         //gameView.allowsCameraControl = true
-        //gameView.autoenablesDefaultLighting = true
+        gameView.autoenablesDefaultLighting = false
         gameView.showsStatistics = true
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
         //gameView.debugOptions = SCNDebugOptions.showWireframe
@@ -42,7 +42,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
         //set render delegate to self
         gameView.delegate = self
         
-        //set game Scene state to isLaunch
+        //setting gameState t= isLaunch
         gameScene.state = .isLaunched
         
     }
@@ -65,6 +65,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate{
     //MARK: User Interaction
     //Handles the rotation of the Master boat
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if(!firstTouch){
+            //set game Scene state to startAnimation
+            gameScene.state = .startAnimation //triggers did set in gameState
+            firstTouch = true
+        }
         primaryTouch = (touches.first?.location(in: gameView))!
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

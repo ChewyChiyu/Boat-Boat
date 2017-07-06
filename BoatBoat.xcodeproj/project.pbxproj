@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20283C931F0DEF3900837ABF /* ShipWreck.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20283C921F0DEF3900837ABF /* ShipWreck.scn */; };
 		2089C5431F0B68A5005F877B /* RBTerrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5421F0B68A5005F877B /* RBTerrain.swift */; };
 		2089C5451F0B68CC005F877B /* RBPerlinNoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */; };
 		2089C5471F0B6A64005F877B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5461F0B6A64005F877B /* GameScene.swift */; };
+		208DFC541F0E19EA008D3368 /* RedBoat.scn in Resources */ = {isa = PBXBuildFile; fileRef = 208DFC531F0E19EA008D3368 /* RedBoat.scn */; };
 		20D0F7681F0D7F87007A7F12 /* Buoy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20D0F7671F0D7F87007A7F12 /* Buoy.scn */; };
+		20D0F76A1F0DDDD5007A7F12 /* Island.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20D0F7691F0DDDD5007A7F12 /* Island.scn */; };
 		20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7821F0ADFB700927DDD /* AppDelegate.swift */; };
 		20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7841F0ADFB700927DDD /* art.scnassets */; };
 		20EBA7871F0ADFB700927DDD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7861F0ADFB700927DDD /* GameViewController.swift */; };
@@ -21,6 +24,11 @@
 		20EBA7A51F0ADFB700927DDD /* BoatBoatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7A41F0ADFB700927DDD /* BoatBoatUITests.swift */; };
 		20EBA7B91F0AEFC500927DDD /* GameScene.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7B81F0AEFC500927DDD /* GameScene.scn */; };
 		20EBA7C11F0AF48C00927DDD /* Boat.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20EBA7C01F0AF48C00927DDD /* Boat.scn */; };
+		20F94F281F0DF122009133C0 /* ShipWreck2.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F271F0DF122009133C0 /* ShipWreck2.scn */; };
+		20F94F2A1F0DF1F7009133C0 /* ShipWreck3.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F291F0DF1F7009133C0 /* ShipWreck3.scn */; };
+		20F94F2C1F0DF27B009133C0 /* ShipWreck4.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F2B1F0DF27B009133C0 /* ShipWreck4.scn */; };
+		20F94F2F1F0DF34D009133C0 /* ShipWreck5.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F2E1F0DF34D009133C0 /* ShipWreck5.scn */; };
+		20F94F321F0DF516009133C0 /* ShipWreck6.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20F94F311F0DF516009133C0 /* ShipWreck6.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,10 +49,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		20283C921F0DEF3900837ABF /* ShipWreck.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck.scn; sourceTree = "<group>"; };
 		2089C5421F0B68A5005F877B /* RBTerrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBTerrain.swift; sourceTree = "<group>"; };
 		2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBPerlinNoiseGenerator.swift; sourceTree = "<group>"; };
 		2089C5461F0B6A64005F877B /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		208DFC531F0E19EA008D3368 /* RedBoat.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = RedBoat.scn; sourceTree = "<group>"; };
 		20D0F7671F0D7F87007A7F12 /* Buoy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Buoy.scn; sourceTree = "<group>"; };
+		20D0F7691F0DDDD5007A7F12 /* Island.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Island.scn; sourceTree = "<group>"; };
 		20EBA77F1F0ADFB700927DDD /* BoatBoat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoatBoat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20EBA7821F0ADFB700927DDD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20EBA7841F0ADFB700927DDD /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -61,6 +72,11 @@
 		20EBA7A61F0ADFB700927DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20EBA7B81F0AEFC500927DDD /* GameScene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = GameScene.scn; sourceTree = "<group>"; };
 		20EBA7C01F0AF48C00927DDD /* Boat.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Boat.scn; sourceTree = "<group>"; };
+		20F94F271F0DF122009133C0 /* ShipWreck2.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck2.scn; sourceTree = "<group>"; };
+		20F94F291F0DF1F7009133C0 /* ShipWreck3.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck3.scn; sourceTree = "<group>"; };
+		20F94F2B1F0DF27B009133C0 /* ShipWreck4.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck4.scn; sourceTree = "<group>"; };
+		20F94F2E1F0DF34D009133C0 /* ShipWreck5.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck5.scn; sourceTree = "<group>"; };
+		20F94F311F0DF516009133C0 /* ShipWreck6.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ShipWreck6.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +108,15 @@
 			isa = PBXGroup;
 			children = (
 				2089C5461F0B6A64005F877B /* GameScene.swift */,
+				20D0F7691F0DDDD5007A7F12 /* Island.scn */,
+				208DFC531F0E19EA008D3368 /* RedBoat.scn */,
 				20EBA7C01F0AF48C00927DDD /* Boat.scn */,
+				20283C921F0DEF3900837ABF /* ShipWreck.scn */,
+				20F94F271F0DF122009133C0 /* ShipWreck2.scn */,
+				20F94F291F0DF1F7009133C0 /* ShipWreck3.scn */,
+				20F94F2B1F0DF27B009133C0 /* ShipWreck4.scn */,
+				20F94F2E1F0DF34D009133C0 /* ShipWreck5.scn */,
+				20F94F311F0DF516009133C0 /* ShipWreck6.scn */,
 				20D0F7671F0D7F87007A7F12 /* Buoy.scn */,
 				20EBA7B81F0AEFC500927DDD /* GameScene.scn */,
 			);
@@ -283,13 +307,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20F94F2A1F0DF1F7009133C0 /* ShipWreck3.scn in Resources */,
+				20F94F281F0DF122009133C0 /* ShipWreck2.scn in Resources */,
+				208DFC541F0E19EA008D3368 /* RedBoat.scn in Resources */,
 				20EBA7C11F0AF48C00927DDD /* Boat.scn in Resources */,
+				20283C931F0DEF3900837ABF /* ShipWreck.scn in Resources */,
+				20F94F321F0DF516009133C0 /* ShipWreck6.scn in Resources */,
+				20F94F2C1F0DF27B009133C0 /* ShipWreck4.scn in Resources */,
 				20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */,
 				20EBA7B91F0AEFC500927DDD /* GameScene.scn in Resources */,
+				20F94F2F1F0DF34D009133C0 /* ShipWreck5.scn in Resources */,
 				20D0F7681F0D7F87007A7F12 /* Buoy.scn in Resources */,
 				20EBA78F1F0ADFB700927DDD /* LaunchScreen.storyboard in Resources */,
 				20EBA78C1F0ADFB700927DDD /* Assets.xcassets in Resources */,
 				20EBA78A1F0ADFB700927DDD /* Main.storyboard in Resources */,
+				20D0F76A1F0DDDD5007A7F12 /* Island.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
