@@ -55,7 +55,21 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
             isPlayLabel?.text = String(score)
         }
     }
-    
+    //each game is 2 minutes and 30 seconds left
+    var timeLeft = (minutes: 2, seconds :30){
+        didSet{
+            if(timeLeft.minutes >= 0 && timeLeft.seconds >= 0){
+                timerLabel?.text = String("\(timeLeft.minutes) : \(timeLeft.seconds)")
+            }else{
+                //times up, end game
+                survived = true
+                state = .isEnded
+            }
+            
+        }
+    }
+    var timer : Timer!
+    var timerLabel: SKLabelNode!
     
     //MARK: Switch on game state engine
     var state : gameState = .isLaunched{
@@ -102,15 +116,21 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 gameViewController.gameView.overlaySKScene = isPlayOverLay
                 gameViewController.gameView.overlaySKScene?.isUserInteractionEnabled = false
                 //setting overlay vars to self
-                isPlayLabel = isPlayOverLay.childNode(withName: "Score") as? SKLabelNode
+                let isPlayMenu = isPlayOverLay.childNode(withName: "isPlayMenu") 
+                isPlayLabel = isPlayMenu?.childNode(withName: "Score") as? SKLabelNode
+                timerLabel = isPlayMenu?.childNode(withName: "TimerLabel") as? SKLabelNode
+                //play label alpha is transparent
+                isPlayMenu?.alpha = 0
+                isPlayMenu?.run(SKAction.fadeAlpha(to: 1, duration: 1))
                 
-                
-                
-                
-                
+                //starting timer
+                DispatchQueue.main.async{
+                    self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.count), userInfo: nil, repeats: true)
+                }
                 break
             case .isEnded:
-                
+                //stop timer
+                timer.invalidate()
                 if(survived){
                     
                 }else{
@@ -130,6 +150,17 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     }
     
     
+    //MARK: Timer func
+    func count(){
+       
+        timeLeft.seconds-=1
+        //handle timer, one sec
+        if(timeLeft.seconds<0){
+            timeLeft.minutes-=1
+            timeLeft.seconds = 60
+        }
+        
+    }
     //MARK: Boat functions
     
     func fallApart(object: SCNNode){
@@ -573,10 +604,8 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     func saveBoat(boat: SCNNode){
        //saving boat
         score+=1
-        boat.runAction( SCNAction.group([SCNAction.move(by: SCNVector3(0,10,0), duration: 1),SCNAction.rotateBy(x: 0, y: 4, z: 0, duration: 1)
-            ]), completionHandler: {
-            boat.removeFromParentNode()
-        })
+        boat.runAction( SCNAction.group([SCNAction.move(by: SCNVector3(0,30,0), duration: 10),SCNAction.rotateBy(x: 0, y: 8, z: 0, duration: 2)
+            ]))
         
     }
     //MARK: Camera functions
