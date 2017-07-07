@@ -26,6 +26,7 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     //Player particle system
     var waterParticle = SCNNode()
     var waterParticleSystem: SCNParticleSystem!
+    
     //saving boat array
     var saveArray = [SCNVector3]()
     
@@ -42,7 +43,8 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     
     var gameViewController : GameViewController!
     
-    
+    //one animation touch
+    var touchBool: Bool = false
     
     
     //mark overlayvars
@@ -95,7 +97,7 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 gameCamera.addChildNode(probe!)
                 probe?.position.y += 60
                 probe?.position.z -= 10 //acocunting for movement
-
+                
                 
                 break
             case .startAnimation:
@@ -104,16 +106,18 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 //sequence for starting animation
                 
                 //setting up camera for animation
+                if(!touchBool){
+                    touchBool = true
                 gameCamera.runAction(SCNAction.move(to:  SCNVector3(masterBoat.position.x,masterBoat.position.y+10,masterBoat.position.z+16), duration: 1.5), completionHandler: {
                     
                     self.state = .isPlaying
                 })
+                }
                 break
             case .isPlaying:
                 print("isPlaying")
                 //add water particle after start animation has started
-                waterParticle = generateWaterParticle()
-                masterBoat.addChildNode(waterParticle)
+                masterBoat.addChildNode(generateWaterParticle())
                 waterParticle.position.z+=1.5 //setting particle system behind boat
                 waterParticle.position.y-=0.5
                 
@@ -122,7 +126,7 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 gameViewController.gameView.overlaySKScene = isPlayOverLay
                 gameViewController.gameView.overlaySKScene?.isUserInteractionEnabled = false
                 //setting overlay vars to self
-                let isPlayMenu = isPlayOverLay.childNode(withName: "isPlayMenu") 
+                let isPlayMenu = isPlayOverLay.childNode(withName: "isPlayMenu")
                 isPlayLabel = isPlayMenu?.childNode(withName: "Score") as? SKLabelNode
                 timerLabel = isPlayMenu?.childNode(withName: "TimerLabel") as? SKLabelNode
                 //play label alpha is transparent
@@ -147,7 +151,45 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 //move overlay off screen
                 isPlayOverLay.run(SKAction.fadeOut(withDuration: 1), completion: {
                     //reseting state
-                   self.gameCamera.runAction(SCNAction.move(by: SCNVector3(0,60,0), duration: 4),completionHandler: {
+                    
+                    
+                    //fade in endOverLay showing score received
+                    
+                    let isEndOverlay = SKScene(fileNamed: "isEndOverlay.sks")
+                    
+                    self.gameViewController.gameView.overlaySKScene = isEndOverlay
+                    self.gameViewController.gameView.overlaySKScene?.isUserInteractionEnabled = false
+                    let menu = isEndOverlay?.childNode(withName: "Menu")
+                    let scoreLabel = menu?.childNode(withName: "Score") as? SKLabelNode
+                    let highScoreLabel = menu?.childNode(withName: "Highscore") as? SKLabelNode
+                    
+                    //applying score to score label
+                    scoreLabel?.text = String(self.score)
+                    
+                    //manage highscore
+                    //highscore config retreive from user defaults and compare / assign
+                    //manage highscores
+                    if let s = UserDefaults.standard.value(forKey: "highscore") {
+                        if(self.score > (s as? Int)!){
+                            UserDefaults.standard.set(self.score, forKey: "highscore")
+                        }
+                    } else {
+                        //user default does not exist yet so set highscore to current rounds score
+                        UserDefaults.standard.set(self.score, forKey: "highscore")
+                        
+                    }
+                    //get highscore again and place on highscore label
+                    let highscore = (UserDefaults.standard.value(forKey: "highscore") as? Int)!
+                    highScoreLabel?.text = String(highscore)
+                    
+                    menu?.alpha = 0
+                    menu?.run(SKAction.fadeAlpha(to: 1, duration: 1))
+                    
+                    self.gameCamera.runAction(SCNAction.move(by: SCNVector3(0,60,0), duration: 4),completionHandler: {
+                        
+                        //hide label
+                        menu?.alpha = 0
+                        
                         self.state = .isReseting
                     })
                 })
@@ -167,34 +209,29 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     
     //MARK: Timer func
     func count(){
-       
+        
         //handle timer, one sec
         if(timeLeft.seconds==0){
             timeLeft.minutes-=1
             timeLeft.seconds = 60
         }
         timeLeft.seconds-=1
-
+        
     }
     //MARK: Boat functions
     
     func fallApart(object: SCNNode){
-        //removing particle system
-        waterParticleSystem.birthRate = 0
-        waterParticleSystem.particleColor = UIColor.clear
+        //remove particle system
         waterParticle.removeFromParentNode()
-        
         //remove parent physicsbody first
         object.physicsBody = nil
         //removing particle
         for objectPart in object.childNodes{
             //wrap boat node in dynamic box physics body
-            
-            
+           
             let position = object.position
             objectPart.removeFromParentNode()
             objectPart.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(geometry: SCNBox(width: 1,height: 1,length: 1,chamferRadius: 0), options: nil)) //small physics body
-            //gravity false
             
             //setting position of object part
             objectPart.position.z += position.z
@@ -327,7 +364,7 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 saveArray.append(contactA.position)
                 saveBoat(boat: contactA)
             }
-
+            
             
         }
     }
@@ -395,9 +432,9 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
         //waterParticle.particleColor = UIColor.blue
         
         //applying water particle to node for position changes
-        let waterParticleNode = SCNNode()
-        waterParticleNode.addParticleSystem(waterParticleSystem)
-        return waterParticleNode
+        waterParticle = SCNNode()
+        waterParticle.addParticleSystem(waterParticleSystem)
+        return waterParticle
         
     }
     
@@ -609,10 +646,10 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
         for index in 0..<obstacleArray.count{
             //despawning of obstacle is behind boat by 10
             if((masterBoat.physicsBody?.velocity.z)! < Float(0)){
-            if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
-                obstacleArray[index].removeFromParentNode()
-                obstacleArray.remove(at: index)
-                break
+                if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
+                    obstacleArray[index].removeFromParentNode()
+                    obstacleArray.remove(at: index)
+                    break
                 }
             }else{
                 if(obstacleArray[index].position.z - masterBoat.presentation.position.z < -80){ // visibility distance
@@ -620,13 +657,13 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                     obstacleArray.remove(at: index)
                     break
                 }
-
+                
             }
         }
         
     }
     func saveBoat(boat: SCNNode){
-       //saving boat
+        //saving boat
         score+=1
         boat.runAction( SCNAction.group([SCNAction.move(by: SCNVector3(0,30,0), duration: 10),SCNAction.rotateBy(x: 0, y: 8, z: 0, duration: 2)
             ]))

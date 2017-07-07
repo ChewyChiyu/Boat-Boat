@@ -12,6 +12,7 @@
 		2089C5451F0B68CC005F877B /* RBPerlinNoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */; };
 		2089C5471F0B6A64005F877B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2089C5461F0B6A64005F877B /* GameScene.swift */; };
 		208DFC541F0E19EA008D3368 /* RedBoat.scn in Resources */ = {isa = PBXBuildFile; fileRef = 208DFC531F0E19EA008D3368 /* RedBoat.scn */; };
+		209777C41F1025DF0007196E /* isEndOverlay.sks in Resources */ = {isa = PBXBuildFile; fileRef = 209777C31F1025DF0007196E /* isEndOverlay.sks */; };
 		20D0F7681F0D7F87007A7F12 /* Buoy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20D0F7671F0D7F87007A7F12 /* Buoy.scn */; };
 		20D0F76A1F0DDDD5007A7F12 /* Island.scn in Resources */ = {isa = PBXBuildFile; fileRef = 20D0F7691F0DDDD5007A7F12 /* Island.scn */; };
 		20EBA7831F0ADFB700927DDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBA7821F0ADFB700927DDD /* AppDelegate.swift */; };
@@ -55,6 +56,7 @@
 		2089C5441F0B68CC005F877B /* RBPerlinNoiseGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RBPerlinNoiseGenerator.swift; sourceTree = "<group>"; };
 		2089C5461F0B6A64005F877B /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		208DFC531F0E19EA008D3368 /* RedBoat.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = RedBoat.scn; sourceTree = "<group>"; };
+		209777C31F1025DF0007196E /* isEndOverlay.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = isEndOverlay.sks; sourceTree = "<group>"; };
 		20D0F7671F0D7F87007A7F12 /* Buoy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Buoy.scn; sourceTree = "<group>"; };
 		20D0F7691F0DDDD5007A7F12 /* Island.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Island.scn; sourceTree = "<group>"; };
 		20EBA77F1F0ADFB700927DDD /* BoatBoat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoatBoat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				20FE7ABE1F0EE15500086E18 /* isPlayOverLay.sks */,
+				209777C31F1025DF0007196E /* isEndOverlay.sks */,
 			);
 			name = SpriteKit;
 			path = BoatBoat;
@@ -328,6 +331,7 @@
 				20F94F321F0DF516009133C0 /* ShipWreck6.scn in Resources */,
 				20F94F2C1F0DF27B009133C0 /* ShipWreck4.scn in Resources */,
 				20EBA7851F0ADFB700927DDD /* art.scnassets in Resources */,
+				209777C41F1025DF0007196E /* isEndOverlay.sks in Resources */,
 				20EBA7B91F0AEFC500927DDD /* GameScene.scn in Resources */,
 				20F94F2F1F0DF34D009133C0 /* ShipWreck5.scn in Resources */,
 				20D0F7681F0D7F87007A7F12 /* Buoy.scn in Resources */,

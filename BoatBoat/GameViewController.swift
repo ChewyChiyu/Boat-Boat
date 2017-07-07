@@ -17,6 +17,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     var gameScene : GameScene!
     var gameView : SCNView!
     
+    
     // primary touch var, changable while touch moves
     var primaryTouch = CGPoint.zero
     
@@ -69,7 +70,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         func resetVars(){
             gameScene.gameViewController = self
             gameScene.state = .isLaunched
-        
         }
     }
     
@@ -82,6 +82,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         if(gameScene.state == .isLaunched){
             //set game Scene state to startAnimation
             gameScene.state = .startAnimation //triggers did set in gameState
+           
         }
         if(gameScene.state != .isEnded){
         primaryTouch = (touches.first?.location(in: gameView))!
