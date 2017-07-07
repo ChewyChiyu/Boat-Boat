@@ -25,7 +25,7 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     
     //Player particle system
     var waterParticle = SCNNode()
-    
+    var waterParticleSystem: SCNParticleSystem!
     //saving boat array
     var saveArray = [SCNVector3]()
     
@@ -52,14 +52,15 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     //game score
     var score = 0{
         didSet{
-            isPlayLabel?.text = String(score)
+            isPlayLabel?.text = String("\(score) ")
         }
     }
     //each game is 2 minutes and 30 seconds left
     var timeLeft = (minutes: 2, seconds :30){
         didSet{
             if(timeLeft.minutes >= 0 && timeLeft.seconds >= 0){
-                timerLabel?.text = String("\(timeLeft.minutes) : \(timeLeft.seconds)")
+                let seconds = (timeLeft.seconds > 9) ? String(timeLeft.seconds) : String("0\(timeLeft.seconds)")
+                timerLabel?.text = "\(timeLeft.minutes) : \(seconds)"
             }else{
                 //times up, end game
                 survived = true
@@ -89,12 +90,17 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 //get and apply water particle to masterBoat, moving back the position of particle node
                 
                 //adding light, spotlight facing down for eerie effect
+                //setting the mood with the lighting
                 let probe = self.rootNode.childNode(withName: "omni", recursively: true)
                 gameCamera.addChildNode(probe!)
                 probe?.position.y += 60
                 probe?.position.z -= 10 //acocunting for movement
+
+                
                 break
             case .startAnimation:
+                
+                
                 //sequence for starting animation
                 
                 //setting up camera for animation
@@ -131,12 +137,21 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
             case .isEnded:
                 //stop timer
                 timer.invalidate()
-                if(survived){
-                    
-                }else{
+                if(!survived){
                     //fall apart
                     fallApart(object: masterBoat)
                 }
+                
+                //reset sequence
+                
+                //move overlay off screen
+                isPlayOverLay.run(SKAction.fadeOut(withDuration: 1), completion: {
+                    //reseting state
+                   self.gameCamera.runAction(SCNAction.move(by: SCNVector3(0,60,0), duration: 4),completionHandler: {
+                        self.state = .isReseting
+                    })
+                })
+                
                 break
             case .isReseting:
                 
@@ -153,26 +168,28 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     //MARK: Timer func
     func count(){
        
-        timeLeft.seconds-=1
         //handle timer, one sec
-        if(timeLeft.seconds<0){
+        if(timeLeft.seconds==0){
             timeLeft.minutes-=1
             timeLeft.seconds = 60
         }
-        
+        timeLeft.seconds-=1
+
     }
     //MARK: Boat functions
     
     func fallApart(object: SCNNode){
+        //removing particle system
+        waterParticleSystem.birthRate = 0
+        waterParticleSystem.particleColor = UIColor.clear
+        waterParticle.removeFromParentNode()
+        
         //remove parent physicsbody first
         object.physicsBody = nil
-        
+        //removing particle
         for objectPart in object.childNodes{
             //wrap boat node in dynamic box physics body
             
-            //removing particles
-            waterParticle.position = SCNVector3(0,-100,0) //hiding from view
-            waterParticle.removeFromParentNode()
             
             let position = object.position
             objectPart.removeFromParentNode()
@@ -300,7 +317,6 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 //add boat to colletion
                 saveArray.append(contactB.position)
                 saveBoat(boat: contactB)
-                print("save boat")
             }
             
         }
@@ -310,7 +326,6 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
                 //add boat to colletion
                 saveArray.append(contactA.position)
                 saveBoat(boat: contactA)
-                print("save boat")
             }
 
             
@@ -363,25 +378,25 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     func generateWaterParticle() -> SCNNode{
         
         //manual particle system editor
-        let waterParticle = SCNParticleSystem()
-        waterParticle.loops = true
-        waterParticle.birthRate = 800
-        waterParticle.emissionDuration = 0.01
-        waterParticle.spreadingAngle = 90
-        waterParticle.particleDiesOnCollision = true
-        waterParticle.particleLifeSpan = 0.03
-        waterParticle.particleLifeSpanVariation = 1
-        waterParticle.particleVelocity = 1
-        waterParticle.particleVelocityVariation = 5
-        waterParticle.particleSize = 0.03
-        waterParticle.isAffectedByGravity = false
-        waterParticle.stretchFactor = 0.03
+        waterParticleSystem = SCNParticleSystem()
+        waterParticleSystem.loops = true
+        waterParticleSystem.birthRate = 800
+        waterParticleSystem.emissionDuration = 0.01
+        waterParticleSystem.spreadingAngle = 90
+        waterParticleSystem.particleDiesOnCollision = true
+        waterParticleSystem.particleLifeSpan = 0.03
+        waterParticleSystem.particleLifeSpanVariation = 1
+        waterParticleSystem.particleVelocity = 1
+        waterParticleSystem.particleVelocityVariation = 5
+        waterParticleSystem.particleSize = 0.03
+        waterParticleSystem.isAffectedByGravity = false
+        waterParticleSystem.stretchFactor = 0.03
         
         //waterParticle.particleColor = UIColor.blue
         
         //applying water particle to node for position changes
         let waterParticleNode = SCNNode()
-        waterParticleNode.addParticleSystem(waterParticle)
+        waterParticleNode.addParticleSystem(waterParticleSystem)
         return waterParticleNode
         
     }
@@ -498,10 +513,10 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
     //MARK: Game Objects, Buoy generation
     
     func manageObstacles(){
+        
         // handles loading in and deleting of Obstacles
         
         //right now max Obstacle count is 7
-        
         //spawn in obstacles if array count is lower than max
         if(obstacleArray.count < numObstacles){
             
@@ -560,10 +575,10 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
             obstacleNode.position = masterBoat.position
             
             //splitting the position in x and z raidus (min: 30)
-            obstacleNode.position.z -= Float(70 + Int(arc4random_uniform(100)))
+            obstacleNode.position.z -= Float(70 + Int(arc4random_uniform(100))) * (((masterBoat.physicsBody?.velocity.z)! < Float(0)) ? 1 : -1)
             obstacleNode.position.x += (Int(arc4random_uniform(2))==1) ? Float(Int(arc4random_uniform(20))) : -Float(Int(arc4random_uniform(20)))
-            //Applying physics body to node
             
+            //Applying physics body to node
             var min = SCNVector3Zero
             var max = SCNVector3Zero
             min = obstacleNode.boundingBox.min
@@ -593,10 +608,19 @@ class GameScene : SCNScene, SCNPhysicsContactDelegate{
         //handling in despawn of obstacles
         for index in 0..<obstacleArray.count{
             //despawning of obstacle is behind boat by 10
+            if((masterBoat.physicsBody?.velocity.z)! < Float(0)){
             if(obstacleArray[index].position.z - masterBoat.presentation.position.z > 10){
                 obstacleArray[index].removeFromParentNode()
                 obstacleArray.remove(at: index)
                 break
+                }
+            }else{
+                if(obstacleArray[index].position.z - masterBoat.presentation.position.z < -80){ // visibility distance
+                    obstacleArray[index].removeFromParentNode()
+                    obstacleArray.remove(at: index)
+                    break
+                }
+
             }
         }
         

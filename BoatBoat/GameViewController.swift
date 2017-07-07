@@ -34,15 +34,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         //gameView.debugOptions = SCNDebugOptions.showPhysicsShapes
         //gameView.debugOptions = SCNDebugOptions.showWireframe
         
-        //Loading in Scene
-        gameScene = GameScene()
-        gameView.scene = gameScene
-        gameScene.gameViewController = self
-        
         //set render delegate to self
         gameView.delegate = self
-        //setting gameState t= isLaunch
-        gameScene.state = .isLaunched
+
+        //Loading in Scene
+        resetScene()
+        
         
     }
     
